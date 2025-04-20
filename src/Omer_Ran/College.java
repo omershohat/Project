@@ -63,7 +63,7 @@ public class College {
                 case "8" -> getDepLecturersIncome();
                 case "9" -> showLecturers();                  // v
                 case "10" -> showCommittees();                // v
-                default -> System.out.println("Unexpected value");
+                default -> System.out.println("Unexpected value!");
             }
         } while (!userChose.equals("0"));
     }
