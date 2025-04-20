@@ -59,8 +59,8 @@ public class College {
                 case "4" -> updateCommChairman();             // v
                 case "5" -> removeLecturerFromComm();         // v
                 case "6" -> addStudyDepartment();             // v
-                case "7" -> getAllLecturersIncome();          // v
-//                case "8" -> getDepLecturersIncome();
+                case "7" -> getAllLecturersIncome();          // v perfect
+                case "8" -> getDepLecturersIncome();
                 case "9" -> showLecturers();                  // v
                 case "10" -> showCommittees();                // v
                 default -> System.out.println("Unexpected value");
