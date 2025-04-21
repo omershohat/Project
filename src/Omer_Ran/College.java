@@ -21,6 +21,7 @@ public class College {
             "Add a new lecturer",
             "Add a new committee",
             "Assign a lecturer to a committee",
+            "Assign a lecturer to a study department",
             "Update committee's chairman",
             "Remove a member from a committee",
             "Add a new study department",
@@ -56,13 +57,14 @@ public class College {
                 case "1" -> addLecturer();                    // v
                 case "2" -> addCommittee();                   // v
                 case "3" -> assignLecturerToComm();           // v
-                case "4" -> updateCommChairman();             // v
-                case "5" -> removeLecturerFromComm();         // v
-                case "6" -> addStudyDepartment();             // v
-                case "7" -> getAllLecturersIncome();          // v perfect
-                case "8" -> getDepLecturersIncome();
-                case "9" -> showLecturers();                  // v
-                case "10" -> showCommittees();                // v
+                case "4" -> assignLecturerToDep();            // v
+                case "5" -> updateCommChairman();             // v
+                case "6" -> removeLecturerFromComm();         // v
+                case "7" -> addStudyDepartment();             // v
+                case "8" -> getAllLecturersIncome();          // v perfect
+                case "9" -> getDepLecturersIncome();
+                case "10" -> showLecturers();                 // v
+                case "11" -> showCommittees();                // v
                 default -> System.out.println("Unexpected value");
             }
         } while (!userChose.equals("0"));
@@ -269,6 +271,54 @@ public class College {
         }
     }
 
+    private static void assignLecturerToDep() {
+        Lecturer selectedLecturer = null;
+        boolean existLec = false;
+        while (!existLec) {
+            System.out.println("Choose a lecturer to assign: ");                // reading a lecturer name
+            System.out.println("(enter '0' to return to menu)");
+            String lecturerName = s.nextLine();
+            if (lecturerName.equals("0")) {
+                return;
+            }
+            for (Lecturer l : lecturers) {                                      // checking for existing lecturer
+                if (l.getName().equals(lecturerName)) {                         // if exist - continue
+                    selectedLecturer = l;
+                    existLec = true;
+                    break;
+                }
+            }
+            if (!existLec) {
+                System.out.println("Lecturer does not exist...");
+            }
+        }
+        Department selectedDepartment = new Department();
+        boolean existDep = false;
+        while (!existDep) {
+            System.out.println("Enter a department: ");                          // reading a department name
+            System.out.println("(enter '0' to return to menu)");
+            String departmentName = s.nextLine();
+            if (departmentName.equals("0")) {
+                return;
+            }
+            for (Department d : studyDepartments) {                              // checking for existing department
+                if (d.getName().equals(departmentName)) {                        // if exist - continue
+                    selectedDepartment = d;
+                    existDep = true;
+                    break;
+                }
+            }
+            if (!existDep) {
+                System.out.println("Department does not exist...");
+            }
+        }
+        if (existLec && existDep) {
+            selectedLecturer.setDepartment(selectedDepartment);                // assigning the lecturer to the department
+            System.out.println(selectedLecturer.getName() + " was assigned to " + selectedDepartment.getName() + " department successfully!");
+            return;
+        }
+    }
+
     private static void updateCommChairman() {
         Committee selectedCommittee = new Committee();
         boolean exist = false;
@@ -394,6 +444,32 @@ public class College {
     }
 
     private static void getDepLecturersIncome() {
+        Department selectedDepartment = new Department();
+        boolean existDep = false;
+        while (!existDep) {
+            System.out.println("Enter a department: ");                          // reading a department name
+            System.out.println("(enter '0' to return to menu)");
+            String departmentName = s.nextLine();
+            if (departmentName.equals("0")) {
+                return;
+            }
+            for (Department d : studyDepartments) {                              // checking for existing department
+                if (d.getName().equals(departmentName)) {                        // if exist - continue
+                    selectedDepartment = d;
+                    existDep = true;
+                    break;
+                }
+            }
+            if (!existDep) {
+                System.out.println("Department does not exist...");
+            }
+        }
+        float sum = 0;
+        Lecturer[] depLecturers = selectedDepartment.getLecturers();
+        for (int i = 0; i < selectedDepartment.getNumOfLecturers() ; i++) {       // calculating average
+            sum += depLecturers[i].getSalary();
+        }
+        System.out.println("The average income of lecturers in '" + selectedDepartment.getName() +"' department is: " + (sum)/(selectedDepartment.getNumOfLecturers()));
     }
 
     private static void showLecturers() {

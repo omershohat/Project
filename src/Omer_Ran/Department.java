@@ -11,6 +11,17 @@ public class Department {
         this.studentCount = studentCount;
     }
 
+    public Lecturer[] getLecturers() {
+        return lecturers;
+    }
+
+    public int getNumOfLecturers() {
+        return numOfLecturers;
+    }
+
+    public Department() {
+    }
+
     public String getName() {
 
         return name;
