@@ -44,15 +44,15 @@ public class Main {
                 case "0" -> System.out.println("Done... Bye");
                 case "1" -> addLecturer(college);                    // v
                 case "2" -> addCommittee(college);                   // v
-                case "3" -> assignLecturerToComm(college);           //
-                case "4" -> assignLecturerToDep(college);            //
-                case "5" -> updateCommChairman(college);             //
-                case "6" -> removeLecturerFromComm(college);         //
+                case "3" -> assignLecturerToComm(college);           // v
+                case "4" -> assignLecturerToDep(college);            // v
+                case "5" -> updateCommChairman(college);             // v
+                case "6" -> removeLecturerFromComm(college);         // v
                 case "7" -> addStudyDepartment(college);             // v
-                case "8" -> getAllLecturersIncome(college);          //
-                case "9" -> getDepLecturersIncome(college);          //
-                case "10" -> showLecturers(college);                 //
-                case "11" -> showCommittees(college);                //
+                case "8" -> getAllLecturersIncome(college);          // v
+                case "9" -> getDepLecturersIncome(college);          // v
+                case "10" -> showLecturers(college);                 // v
+                case "11" -> showCommittees(college);                // v
                 default -> System.out.println("Unexpected value!");
             }
         } while (!userChose.equals("0"));
@@ -94,6 +94,9 @@ public class Main {
         valid = false;
         while (!valid) {
             System.out.println("Choose degree level: ");
+            for (int i = 0; i < DegreeLevel.values().length; i++) {
+                System.out.println(i+1 + ". " + DegreeLevel.values()[i]);
+            }
             System.out.println("(enter '0' to return to menu)");
             degreeChoice = s.nextInt();
             if (degreeChoice == 0) {

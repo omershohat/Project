@@ -24,14 +24,6 @@ public class Lecturer {
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public DegreeLevel getDegreeLevel() {
         return degreeLevel;
     }
@@ -40,20 +32,8 @@ public class Lecturer {
         this.degreeLevel = degreeLevel;
     }
 
-    public String getMajor() {
-        return major;
-    }
-
-    public void setMajor(String major) {
-        this.major = major;
-    }
-
     public float getSalary() {
         return salary;
-    }
-
-    public void setSalary(float salary) {
-        this.salary = salary;
     }
 
     public Department getDepartment() {
@@ -80,18 +60,6 @@ public class Lecturer {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public static String[] getNameList(Lecturer[] array) {
-        String[] nameList = new String[array.length];
-        for (int i = 0; i < array.length; i++) {
-            nameList[i] = array[i].getName();
-        }
-        return nameList;
     }
 
     @Override

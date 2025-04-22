@@ -24,10 +24,6 @@ public class Committee {
         return lecturers;
     }
 
-    public Lecturer getChairman() {
-        return chairman;
-    }
-
     public String getLecturersNames() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");

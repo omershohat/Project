@@ -1,12 +1,10 @@
 package Omer_Ran;
 
-import java.util.Scanner;
-
 enum DegreeLevel {
-    BACHELORS("bachelors"),             // First degree
-    MASTERS("masters"),                 // Second degree
-    DOCTORATE("doctorate"),             // Dr.
-    PROFESSOR("professor");             // Professor
+    BACHELORS("BA"),             // First degree
+    MASTERS("MA"),                 // Second degree
+    DOCTOR("Dr."),             // Dr.
+    PROFESSOR("PhD.");             // Professor
     final String degreeDisplay;
 
     DegreeLevel(String display) {
@@ -23,7 +21,6 @@ public class College {
     private static int numOfLecturers;
     private static int numOfCommittee;
     private static int numOfDeps;
-    private static Scanner s;
     private static DegreeLevel[] degrees = DegreeLevel.values();
 
 
@@ -32,76 +29,28 @@ public class College {
         this.collegeName = collegeName;
     }
 
-    public static String getCollegeName() {
-        return collegeName;
-    }
-
-    public static void setCollegeName(String collegeName) {
-        College.collegeName = collegeName;
-    }
-
     public static Lecturer[] getLecturers() {
         return lecturers;
-    }
-
-    public static void setLecturers(Lecturer[] lecturers) {
-        College.lecturers = lecturers;
     }
 
     public static Department[] getStudyDepartments() {
         return studyDepartments;
     }
 
-    public static void setStudyDepartments(Department[] studyDepartments) {
-        College.studyDepartments = studyDepartments;
-    }
-
     public static Committee[] getCommittees() {
         return committees;
-    }
-
-    public static void setCommittees(Committee[] committees) {
-        College.committees = committees;
     }
 
     public static int getNumOfLecturers() {
         return numOfLecturers;
     }
 
-    public static void setNumOfLecturers(int numOfLecturers) {
-        College.numOfLecturers = numOfLecturers;
-    }
-
     public static int getNumOfCommittee() {
         return numOfCommittee;
     }
 
-    public static void setNumOfCommittee(int numOfCommittee) {
-        College.numOfCommittee = numOfCommittee;
-    }
-
     public static int getNumOfDeps() {
         return numOfDeps;
-    }
-
-    public static void setNumOfDeps(int numOfDeps) {
-        College.numOfDeps = numOfDeps;
-    }
-
-    public static Scanner getS() {
-        return s;
-    }
-
-    public static void setS(Scanner s) {
-        College.s = s;
-    }
-
-    public static DegreeLevel[] getDegrees() {
-        return degrees;
-    }
-
-    public static void setDegrees(DegreeLevel[] degrees) {
-        College.degrees = degrees;
     }
 
     private static Lecturer[] copy(Lecturer[] arr, int size) {
