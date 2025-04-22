@@ -102,7 +102,7 @@ public class Lecturer {
                 ", degreeLevel = " + degreeLevel.degreeDisplay +
                 ", major = '" + major + '\'' +
                 ", salary = " + salary +
-                ", department = " + (this.department == null ? "none" : name) +
+                ", department = " + (department == null ? "none" : department.getName()) +
                 '}';
     }
 }
