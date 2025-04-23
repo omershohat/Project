@@ -1,16 +1,37 @@
 package Omer_Ran;
 
+import java.awt.image.ImageProducer;
+
+import static Omer_Ran.Utils.*;
+import static Omer_Ran.ActionStatus.*;
+
 enum DegreeLevel {
     BACHELORS("BA"),             // First degree
     MASTERS("MA"),                 // Second degree
     DOCTOR("Dr."),             // Dr.
     PROFESSOR("PhD.");             // Professor
-    final String degreeDisplay;
+    private final String description;
 
-    DegreeLevel(String display) {
-        this.degreeDisplay = display;
-    }
+    DegreeLevel(String description) {this.description =description;}
 
+    @Override
+    public String toString() {return description;}
+}
+
+enum ActionStatus {
+    SUCCESS("Success"),
+    LECTURER_EXIST("Lecturer is already exist..."),
+    LECTURER_NOT_EXIST("Lecturer does not exist..."),
+    INVALID_CHOICE("Invalid choice."),
+    DEPARTMENT_NOT_EXIST("Department does not exist..."),
+    INVALID_SALARY("Invalid salary input. Salary must be 0 or above.");
+
+    private final String description;
+
+    ActionStatus(String description) {this.description =description;}
+
+    @Override
+    public String toString() {return description;}
 }
 
 public class College {
@@ -77,14 +98,23 @@ public class College {
         return temp;
     }
 
-    public boolean addLecturer(String name, String id, DegreeLevel degreeLevel, String major, float salary, Department department) {
-        Lecturer lecturer = new Lecturer(name,id,degreeLevel,major,salary,department);      // adding a new lecturer for general list
+    public ActionStatus addLecturer(String name, String id, DegreeLevel degreeLevel, String major, float salary, Department department) {
+        Lecturer lecturer = new Lecturer(name,id,degreeLevel,major,salary,department);
+        return addLecturerFinal(lecturer);                                                      // adding a new lecturer for general list
+    }
+
+    public ActionStatus addLecturerFinal(Lecturer lecturer) {
+        if (isExist(lecturers,numOfLecturers,lecturer)) {return LECTURER_EXIST;}
+        if (lecturer.getSalary() < 0) {return INVALID_SALARY;}
+        if (!isExist(studyDepartments, numOfDeps, lecturer.getDepartment())) {return DEPARTMENT_NOT_EXIST;}
+
         if (numOfLecturers == lecturers.length) {
-            lecturers = copy(lecturers, numOfLecturers == 0 ? 2 : numOfLecturers * 2);
+            lecturers = (Lecturer[]) resizeArr(lecturers);
         }
         lecturers[numOfLecturers++] = lecturer;
-        return true;
+        return SUCCESS;
     }
+
 
     public boolean addCommittee(String name, Lecturer chairman) {
         Committee committee = new Committee(name, chairman);                              // adding a new committee to the general list.

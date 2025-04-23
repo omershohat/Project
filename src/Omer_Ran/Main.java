@@ -65,33 +65,18 @@ public class Main {
         if (name.equals("0")) {
             return;
         }
-        if (isExist(name, college.getNumOfLecturers(), college.getLecturers())) {                           // checking for existing lecturer
-            System.out.println(name + " already exist...");                                                 // if not - continue
-            addLecturer(college);
-            return;
-        }
-
-        String id = new String();                                                                           // reading an ID for lecturer
-        boolean valid = false;
-        while (!valid) {
-            System.out.println("Enter lecturer's ID: ");
-            System.out.println("(enter '0' to return to menu)");
-            id = s.next();
-            if (id.equals("0")) {
-                return;
-            }
-            else if (id.length()==9) {                                                                      // checking if is valid
-                valid = true;
-            }
-            else {
-                System.out.println("Invalid ID. Make sure to enter exactly 9 digits.");
-            }
-        }
-
+//        if (isExist(name, college.getNumOfLecturers(), college.getLecturers())) {                           // checking for existing lecturer
+//            System.out.println(name + " already exist...");                                                 // if not - continue
+//            addLecturer(college);
+//            return;
+//        }
+        System.out.println("Enter lecturer's ID: ");
+        System.out.println("(enter '0' to return to menu)");
+        String id = s.next();                                                                           // reading an ID for lecturer
         DegreeLevel[] degreeLevels = DegreeLevel.values();                                                  // reading degree level of the lecturer
         DegreeLevel degreeLevel = null;
         int degreeChoice;
-        valid = false;
+        boolean valid = false;
         while (!valid) {
             System.out.println("Choose degree level: ");
             for (int i = 0; i < DegreeLevel.values().length; i++) {
@@ -107,7 +92,7 @@ public class Main {
                 valid = true;
             }
             else {
-                System.out.println("Invalid choice.");
+                System.out.println(ActionStatus.INVALID_CHOICE);
             }
         }
 
@@ -129,34 +114,46 @@ public class Main {
         s.nextLine();
 
         String departmentName;                                                                              // reading the lecturer's department name
-        Department department = null;
-        boolean exist = false;
-        while (!exist) {
-            System.out.println("Enter lecturer's department (if not assigned to any - type 'none'): ");
-            System.out.println("(enter '0' to return to menu)");
-            departmentName = s.nextLine();
-            if (departmentName.equals("0")) {
-                return;
-            }
-            if (!departmentName.equals("none")) {
-                for (int i = 0; i < college.getNumOfDeps(); i++) {                                          // checking for existing department
-                    if (college.getStudyDepartments()[i].getName().equals(departmentName)) {                // if exist - continue
-                        department = college.getStudyDepartments()[i];
-                        exist = true;
-                        break;
-                    }
-                }
-                if (!exist) {
-                    System.out.println(departmentName + " does not exist...");
-                }
-            }
-            else {
-                exist = true;
+        System.out.println("Enter lecturer's department (if not assigned to any - type 'none'): ");
+        System.out.println("(enter '0' to return to menu)");
+        departmentName = s.nextLine();
+        if (departmentName.equals("0")) {
+            return;
+        }
+        Department department = new Department(departmentName);
+//        boolean exist = false;
+//        while (!exist) {
+//            System.out.println("Enter lecturer's department (if not assigned to any - type 'none'): ");
+//            System.out.println("(enter '0' to return to menu)");
+//            departmentName = s.nextLine();
+//            if (departmentName.equals("0")) {
+//                return;
+//            }
+//            if (!departmentName.equals("none")) {
+//                for (int i = 0; i < college.getNumOfDeps(); i++) {                                          // checking for existing department
+//                    if (college.getStudyDepartments()[i].getName().equals(departmentName)) {                // if exist - continue
+//                        department = college.getStudyDepartments()[i];
+//                        exist = true;
+//                        break;
+//                    }
+//                }
+//                if (!exist) {
+//                    System.out.println(departmentName + " does not exist...");
+//                }
+//            }
+//            else {
+//                exist = true;
+//            }
+//        }
+        ActionStatus res = college.addLecturer(name,id,degreeLevel,major,salary,department);
+        if (!res.equals(ActionStatus.SUCCESS)) {
+            System.out.println("Failed to add the lecturer '" + name + "', Error: " + res + "\n");
+            return;
+            if (res.equals(ActionStatus.LECTURER_EXIST)) {
+                addLecturer(college);
             }
         }
-        college.addLecturer(name,id,degreeLevel,major,salary,department);
         System.out.println("The new lecturer '" + name + "' has been added successfully!");
-        return;
     }
 
     private static void addCommittee(College college) {
@@ -467,25 +464,7 @@ public class Main {
         }
     }
 
-    private static boolean isExist(String name, int numOfObjects, Object[] array) {
-        for (int i = 0; i < numOfObjects; i++) {
-            Object obj = array[i];
-            String objName = null;
 
-            if (obj instanceof Lecturer) {
-                objName = ((Lecturer) obj).getName();
-            } else if (obj instanceof Department) {
-                objName = ((Department) obj).getName();
-            } else if (obj instanceof Committee) {
-                objName = ((Committee) obj).getName();
-            }
-
-            if (objName != null && objName.equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private static String showMenu(Scanner s) {
         System.out.println("\n====== Menu =======");

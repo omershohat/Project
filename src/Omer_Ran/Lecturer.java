@@ -67,10 +67,16 @@ public class Lecturer {
         return  "{" +
                 "name = '" + name + '\'' +
                 ", id = '" + id + '\'' +
-                ", degreeLevel = " + degreeLevel.degreeDisplay +
+                ", degreeLevel = " + degreeLevel +
                 ", major = '" + major + '\'' +
                 ", salary = " + salary +
                 ", department = " + (department == null ? "none" : department.getName()) +
                 '}';
+    }
+
+    public boolean equalsN(Lecturer lec) {
+        if (this.getName().equals(lec.getName())){
+            return true;
+        }
     }
 }
