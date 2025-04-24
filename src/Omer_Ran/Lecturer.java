@@ -24,6 +24,10 @@ public class Lecturer {
         }
     }
 
+    public Lecturer(String name) {
+        this.name = name;
+    }
+
     public DegreeLevel getDegreeLevel() {
         return degreeLevel;
     }
@@ -37,21 +41,15 @@ public class Lecturer {
     }
 
     public Department getDepartment() {
-        if (this.department == null) {
-            this.setNoneDepartment();
-        }
-        return this.department;
+        return department;
     }
 
-    public void setDepartment(Department department) {
-        if (department == null) {
-            setNoneDepartment();
-            department.addLecturer(this);
+    public ActionStatus setDepartment(Department department) {
+        this.department = department;
+        if (department !=null) {
+            department.assign(this);
         }
-        else {
-            this.department = department;
-            department.addLecturer(this);
-        }
+        return ActionStatus.SUCCESS;
     }
 
     public void setNoneDepartment() {
@@ -64,7 +62,7 @@ public class Lecturer {
 
     @Override
     public String toString() {
-        return  "{" +
+        return "{" +
                 "name = '" + name + '\'' +
                 ", id = '" + id + '\'' +
                 ", degreeLevel = " + degreeLevel +
@@ -72,11 +70,5 @@ public class Lecturer {
                 ", salary = " + salary +
                 ", department = " + (department == null ? "none" : department.getName()) +
                 '}';
-    }
-
-    public boolean equalsN(Lecturer lec) {
-        if (this.getName().equals(lec.getName())){
-            return true;
-        }
     }
 }

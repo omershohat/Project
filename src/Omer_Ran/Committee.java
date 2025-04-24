@@ -1,6 +1,6 @@
 package Omer_Ran;
 
-import java.util.Arrays;
+import static Omer_Ran.Utils.resizeArr;
 
 public class Committee {
     private String name;
@@ -16,12 +16,20 @@ public class Committee {
         this.chairman = chairman;
     }
 
+    public Committee(String name) {
+        this.name = name;
+    }
+
     public int getNumOfLecturers() {
         return numOfLecturers;
     }
 
     public Lecturer[] getLecturers() {
         return lecturers;
+    }
+
+    public Lecturer getChairman() {
+        return chairman;
     }
 
     public String getLecturersNames() {
@@ -41,25 +49,21 @@ public class Committee {
         return sb.toString();
     }
 
-    public boolean setChairman(Lecturer chairman) {
-        if (chairman.getDegreeLevel().ordinal() >= 2) {
-            this.chairman = chairman;
-            return true;
-        } else {
-            return false;
-        }
+    public ActionStatus setChairman(Lecturer chairman) {
+        this.chairman = chairman;
+        return ActionStatus.SUCCESS;
     }
 
     public String getName() {
         return name;
     }
 
-    public void addLecturer(Lecturer lecturer) {
-        if (numOfLecturers == lecturers.length) {
-            lecturers = copy(lecturers, numOfLecturers == 0 ? 2 : numOfLecturers * 2);
+    public ActionStatus assign(Lecturer lecturer) {
+        if (numOfLecturers == lecturers.length) {                   // making sure there is place for new lecturer
+            lecturers = (Lecturer[]) resizeArr(lecturers);
         }
-        lecturers[numOfLecturers++] = lecturer;
-        return;
+        lecturers[numOfLecturers++] = lecturer;                     // inserting lecturer to committee array by index
+        return ActionStatus.SUCCESS;
     }
 
     private static Lecturer[] copy(Lecturer[] arr, int size) {
@@ -89,7 +93,7 @@ public class Committee {
         return "{" +
                 "name = '" + name + '\'' +
                 ", chairman = " + chairman.getName() +
-                ", lecturers = " + this.getLecturersNames() +
+                ", lecturers = " + getLecturersNames() +
                 '}';
     }
 }
