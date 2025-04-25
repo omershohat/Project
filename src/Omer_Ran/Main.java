@@ -334,7 +334,7 @@ public class Main {
             }
         }
     }
-    
+
     private static int showMenu(Scanner s) {
         System.out.println("\n====== Menu =======");
         for (int i = 0; i < MENU.length; i++) {

@@ -21,13 +21,6 @@ public class Department {
         return name;
     }
 
-    public void addLecturer(Lecturer lecturer) {
-        if (numOfLecturers == lecturers.length) {
-            lecturers = (Lecturer[]) resizeArr(lecturers);
-        }
-        lecturers[numOfLecturers++] = lecturer;
-    }
-
     public ActionStatus assign(Lecturer lecturer) {
         if (numOfLecturers == lecturers.length) {                   // making sure there is place for new lecturer
             lecturers = (Lecturer[]) resizeArr(lecturers);

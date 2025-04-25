@@ -16,7 +16,7 @@ public class Lecturer {
         this.salary = salary;
         this.department = department;
         if (department != null) {
-            department.addLecturer(this);
+            department.assign(this);
         }
     }
 
