@@ -1,7 +1,5 @@
 package Omer_Ran;
 
-import java.awt.image.ImageProducer;
-
 import static Omer_Ran.Utils.*;
 import static Omer_Ran.ActionStatus.*;
 
@@ -33,9 +31,10 @@ enum ActionStatus {
     DEGREE_LEVEL_TOO_LOW("Lecturer must have a 'Dr.' degree or higher."),
     DEPARTMENT_EXIST("Department already exists..."),
     COMMITTEE_NOT_EXIST("Committee does not exists..."),
-    LECTURER_EXIST_IN_COMM("Lecturer already exists in that committee..."),
-    LECTURER_IS_CHAIRMAN("Lecturer already exists in committee as the chairman."),
-    LECTURER_IN_DEP("Lecturer already exists in that department...");
+    LECTURER_EXIST_IN_COMM("Lecturer already exists in selected committee..."),
+    LECTURER_IS_CHAIRMAN("Lecturer already exists in selected committee as the chairman."),
+    LECTURER_IN_DEP("Lecturer already exists in selected department..."),
+    LECTURER_NOT_EXIST_IN_COMM("Lecturer does not exist in selected committee.");
 
     private final String description;
 
@@ -57,8 +56,6 @@ public class College {
     private int numOfLecturers;
     private int numOfCommittee;
     private int numOfDeps;
-    private DegreeLevel[] degrees = DegreeLevel.values();
-
 
     public College(String collegeName) {
         this.collegeName = collegeName;
@@ -66,10 +63,6 @@ public class College {
 
     public Lecturer[] getLecturers() {
         return lecturers;
-    }
-
-    public Department[] getStudyDepartments() {
-        return studyDepartments;
     }
 
     public Committee[] getCommittees() {
@@ -82,10 +75,6 @@ public class College {
 
     public int getNumOfCommittee() {
         return numOfCommittee;
-    }
-
-    public int getNumOfDeps() {
-        return numOfDeps;
     }
 
     public ActionStatus addLecturer(String name, String id, DegreeLevel degreeLevel, String major, float salary, Department department) {
@@ -213,5 +202,24 @@ public class College {
             return DEGREE_LEVEL_TOO_LOW;                                                                        // if not - ERROR
         }
         return com.setChairman(lec);                                                                            // assigning lecturer as chairman
+    }
+
+    public ActionStatus removeLecturerFromComm(Lecturer lecturer, Committee committee) {
+        Committee com = (Committee) findObject(committees,numOfCommittee,committee);            // finding if committee exists
+        if (com == null) {
+            return COMMITTEE_NOT_EXIST;                                                         // if not - ERROR
+        }
+        Lecturer lec = (Lecturer) findObject(lecturers,numOfLecturers,lecturer);
+        return com.removeLecturer(lec);                                                    // if exists - check if exists in committee and remove
+    }
+
+    public float getDepLecturersIncome(Department department) {
+        Department dep = (Department) findObject(studyDepartments,numOfDeps, department);       // find if department exists
+        if (dep != null) {
+            return dep.getLecturersIncome();                                                    // if exists - calculate and return average income
+        }
+        else {
+            return 0;                                                                           // if not - return 0
+        }
     }
 }

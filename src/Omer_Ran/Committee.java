@@ -1,5 +1,6 @@
 package Omer_Ran;
 
+import static Omer_Ran.ActionStatus.LECTURER_NOT_EXIST_IN_COMM;
 import static Omer_Ran.Utils.resizeArr;
 
 public class Committee {
@@ -8,8 +9,6 @@ public class Committee {
     private Lecturer[] lecturers = new Lecturer[0];
     private int numOfLecturers;
 
-    public Committee() {
-    }
 
     public Committee(String name, Lecturer chairman) {
         this.name = name;
@@ -20,16 +19,25 @@ public class Committee {
         this.name = name;
     }
 
-    public int getNumOfLecturers() {
-        return numOfLecturers;
+    public String getName() {
+        return name;
+    }
+
+    public Lecturer getChairman() {
+        return chairman;
+    }
+
+    public ActionStatus setChairman(Lecturer chairman) {
+        this.chairman = chairman;
+        return ActionStatus.SUCCESS;
     }
 
     public Lecturer[] getLecturers() {
         return lecturers;
     }
 
-    public Lecturer getChairman() {
-        return chairman;
+    public int getNumOfLecturers() {
+        return numOfLecturers;
     }
 
     public String getLecturersNames() {
@@ -49,15 +57,6 @@ public class Committee {
         return sb.toString();
     }
 
-    public ActionStatus setChairman(Lecturer chairman) {
-        this.chairman = chairman;
-        return ActionStatus.SUCCESS;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public ActionStatus assign(Lecturer lecturer) {
         if (numOfLecturers == lecturers.length) {                   // making sure there is place for new lecturer
             lecturers = (Lecturer[]) resizeArr(lecturers);
@@ -66,26 +65,21 @@ public class Committee {
         return ActionStatus.SUCCESS;
     }
 
-    private static Lecturer[] copy(Lecturer[] arr, int size) {
-        Lecturer[] temp = new Lecturer[size];
-        for (int i = 0; i < arr.length; i++) {
-            temp[i] = arr[i];
-        }
-        return temp;
-    }
-
-    public boolean removeLecturer(String lecturerName) {
+    public ActionStatus removeLecturer(Lecturer lecturer) {
         for (int i = 0; i < numOfLecturers; i++) {                          // checking for existing lecturer
-            if (lecturers[i].getName().equals(lecturerName)) {
+            if (lecturers[i] == (lecturer)) {
                 for (int j = i; j < numOfLecturers - 1; j++) {              // if exist - from that lecturer index, shift all lecturers left
+                    if (lecturers[j] == null) {
+                        break;
+                    }
                     lecturers[j] = lecturers[j + 1];
                 }
-                lecturers[numOfLecturers - 1] = null;                       // remove last one
+                lecturers[numOfLecturers - 1] = null;                       // remove last doubled lecturer
                 numOfLecturers--;
-                return true;
+                return ActionStatus.SUCCESS;
             }
         }
-        return false; // Not found
+        return LECTURER_NOT_EXIST_IN_COMM;                                  // if not exists - ERROR
     }
 
     @Override

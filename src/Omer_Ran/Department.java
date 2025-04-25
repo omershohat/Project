@@ -13,15 +13,11 @@ public class Department {
         this.studentCount = studentCount;
     }
 
-    public Department() {
-    }
-
     public Department(String departmentName) {
         name = departmentName;
     }
 
     public String getName() {
-
         return name;
     }
 
@@ -30,23 +26,6 @@ public class Department {
             lecturers = (Lecturer[]) resizeArr(lecturers);
         }
         lecturers[numOfLecturers++] = lecturer;
-        return;
-    }
-
-    private static Lecturer[] copy(Lecturer[] arr, int size) {
-        Lecturer[] temp = new Lecturer[size];
-        for (int i = 0; i < arr.length; i++) {
-            temp[i] = arr[i];
-        }
-        return temp;
-    }
-
-    public Lecturer[] getLecturers() {
-        return lecturers;
-    }
-
-    public  int getNumOfLecturers() {
-        return numOfLecturers;
     }
 
     public ActionStatus assign(Lecturer lecturer) {
@@ -55,5 +34,18 @@ public class Department {
         }
         lecturers[numOfLecturers++] = lecturer;                     // inserting lecturer to department array by index
         return ActionStatus.SUCCESS;
+    }
+
+    public float getLecturersIncome() {
+        float sum = 0f;
+        for (Lecturer lec : lecturers) {                            // summing all department's lecturers income
+            if (lec != null ) {
+                sum += lec.getSalary();
+            }
+            else {
+                break;
+            }
+        }
+        return (sum) / numOfLecturers;                              // returning the average
     }
 }

@@ -38,38 +38,40 @@ public class Main {
 
     public static void run(College college) {
         s = new Scanner(System.in);
-        String userChose;
+        int userChose;
         do {
             userChose = showMenu(s);
             s.nextLine();
             switch (userChose) {
-                case "0" -> System.out.println("Done... Bye");
-                case "1" -> addLecturer(college);                    // v
-                case "2" -> addCommittee(college);                   // v
-                case "3" -> assignLecturerToComm(college);           // v
-                case "4" -> assignLecturerToDep(college);            // v
-                case "5" -> updateCommChairman(college);             // v
-                case "6" -> removeLecturerFromComm(college);         //
-                case "7" -> addStudyDepartment(college);             // v
-                case "8" -> getAllLecturersIncome(college);          //
-                case "9" -> getDepLecturersIncome(college);          //
-                case "10" -> showLecturers(college);                 // v
-                case "11" -> showCommittees(college);                // v
+                case 0 -> System.out.println("Done... Bye");
+                case 1 -> addLecturer(college);                    // v
+                case 2 -> addCommittee(college);                   // v
+                case 3 -> assignLecturerToComm(college);           // v
+                case 4 -> assignLecturerToDep(college);            // v
+                case 5 -> updateCommChairman(college);             // v
+                case 6 -> removeLecturerFromComm(college);         // v
+                case 7 -> addStudyDepartment(college);             // v
+                case 8 -> getAllLecturersIncome(college);          // v
+                case 9 -> getDepLecturersIncome(college);          // v
+                case 10 -> showLecturers(college);                 // v
+                case 11 -> showCommittees(college);                // v
                 default -> System.out.println("Unexpected value!");
             }
-        } while (!userChose.equals("0"));
+        } while (userChose != 0);
     }
 
     private static void addLecturer(College college) {
-        System.out.println("Enter lecturer name: ");                                // reading name of new lecturer
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Enter lecturer name: \n" +
+                        "(enter '0' to return to menu)");
         String name = s.nextLine();
         if (name.equals("0")) {
             return;
         }
 
-        System.out.println("Enter lecturer's ID: ");
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Enter lecturer's ID: \n" +
+                        "(enter '0' to return to menu)");
         String id = s.next();
 
         DegreeLevel[] degreeLevels = DegreeLevel.values();                          // reading degree level of the lecturer
@@ -94,16 +96,18 @@ public class Main {
         }
 
         String major;                                                               // reading major of lecturer
-        System.out.println("Enter lecturer's major: ");
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Enter lecturer's major: \n" +
+                        "(enter '0' to return to menu)");
         major = s.next();
         if (major.equals("0")) {
             return;
         }
 
         float salary;                                                               // reading salary of lecturer
-        System.out.println("Enter lecturer's salary: ");
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Enter lecturer's salary: \n" +
+                        "(enter '0' to return to menu)");
         salary = s.nextFloat();
         if (salary == 0) {
             return;
@@ -111,8 +115,9 @@ public class Main {
         s.nextLine();
 
         String departmentName;                                                      // reading the lecturer's department name
-        System.out.println("Enter lecturer's department (if not assigned to any - type 'none'): ");
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Enter lecturer's department (if not assigned to any - type 'none'): \n" +
+                        "(enter '0' to return to menu)");
         departmentName = s.nextLine();
         if (departmentName.equals("0")) {
             return;
@@ -131,14 +136,16 @@ public class Main {
     }
 
     private static void addCommittee(College college) {
-        System.out.println("Enter a committee name: ");                                     // reading name of new committee
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Enter a committee name: \n" +
+                        "(enter '0' to return to menu)");
         String name = s.nextLine();
         if (name.equals("0")) {
             return;
         }
-        System.out.println("Enter chairman's name: ");                                      // reading a potential chairman's name
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Enter chairman's name: \n" +
+                        "(enter '0' to return to menu)");
         String lecturerName = s.nextLine();
         if (lecturerName.equals("0")) {
             return;
@@ -154,16 +161,18 @@ public class Main {
     }
 
     private static void assignLecturerToComm(College college) {
-        System.out.println("Choose a lecturer to assign: ");                // reading a lecturer name
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Choose a lecturer to assign: \n" +
+                        "(enter '0' to return to menu)");
         String lecturerName = s.nextLine();
         if (lecturerName.equals("0")) {
             return;
         }
         Lecturer pendingLecturer = new Lecturer(lecturerName);
 
-        System.out.println("Enter a committee: ");                          // reading a committee name
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Enter a committee: \n" +
+                        "(enter '0' to return to menu)");
         String committeeName = s.nextLine();
         if (committeeName.equals("0")) {
             return;
@@ -179,16 +188,18 @@ public class Main {
     }
 
     private static void assignLecturerToDep(College college) {
-        System.out.println("Choose a lecturer to assign: ");                // reading a lecturer name
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Choose a lecturer to assign: \n" +
+                        "(enter '0' to return to menu)");
         String lecturerName = s.nextLine();
         if (lecturerName.equals("0")) {
             return;
         }
         Lecturer pendingLecturer = new Lecturer(lecturerName);
 
-        System.out.println("Enter a department: ");                          // reading a department name
-        System.out.println("(enter '0' to return to menu)");
+        System.out.println(
+                "Enter a department: \n" +
+                        "(enter '0' to return to menu)");
         String departmentName = s.nextLine();
         if (departmentName.equals("0")) {
             return;
@@ -231,41 +242,30 @@ public class Main {
     }
 
     private static void removeLecturerFromComm(College college) {
-        Committee selectedCommittee = new Committee();                      // reading a committee to access
-        boolean exist = false;
-        while (!exist) {
-            System.out.println("Enter a committee: ");
-            System.out.println("(enter '0' to return to menu)");
-            String committeeName = s.nextLine();
-            if (committeeName.equals("0")) {
-                return;
-            }
-            for (Committee c : college.getCommittees()) {                                // checking for existing committee
-                if (c.getName().equals(committeeName)) {                    // if exist - continue
-                    selectedCommittee = c;
-                    exist = true;
-                    break;
-                }
-            }
-            if (!exist) {
-                System.out.println("Committee does not exist...");
-            }
+        System.out.println(
+                "Enter a committee: \n" +                                       // reading a committee
+                        "(enter '0' to return to menu)");
+        String committeeName = s.nextLine();
+        if (committeeName.equals("0")) {
+            return;
         }
-        Lecturer selectedLecturer = new Lecturer();                         // reading a lecturer to remove
-        boolean done = false;
-        while (!done) {
-            System.out.println("Choose a lecturer to remove: ");
-            System.out.println("(enter '0' to return to menu)");
-            String lecturerName = s.nextLine();
-            if (lecturerName.equals("0")) {
-                return;
-            } else if (selectedCommittee.removeLecturer(lecturerName)) {     // activating removeLecturer(lecturerName) from Committee.class
-                done = true;                                               // if 'true' it means lecturer was removed
-            } else {
-                System.out.println("Lecturer does not exist...");
-            }
+        Committee committee = new Committee(committeeName);
+
+        System.out.println(
+                "Choose a lecturer to remove: \n" +                             // reading a lecturer
+                        "(enter '0' to return to menu)");
+        String lecturerName = s.nextLine();
+        if (lecturerName.equals("0")) {
+            return;
         }
-        System.out.println(selectedLecturer.getName() + " was removed from " + selectedCommittee.getName() + " committee successfully!");
+        Lecturer lecturer = new Lecturer(lecturerName);
+
+        ActionStatus res = college.removeLecturerFromComm(lecturer, committee);                  // trying to remove lecturer from committee
+        if (!res.equals(ActionStatus.SUCCESS)) {                                                // printing result
+            System.out.println("Failed to remove '" + lecturerName + "' from '" + committeeName + "' committee, Error: " + res);
+        } else {
+            System.out.println("'" + lecturerName + "' was removed from '" + committeeName + "' committee successfully!");
+        }
     }
 
     private static void addStudyDepartment(College college) {
@@ -302,32 +302,21 @@ public class Main {
     }
 
     private static void getDepLecturersIncome(College college) {
-        Department selectedDepartment = new Department();
-        boolean existDep = false;
-        while (!existDep) {
-            System.out.println("Enter a department: ");                                         // reading a department name
-            System.out.println("(enter '0' to return to menu)");
-            String departmentName = s.nextLine();
-            if (departmentName.equals("0")) {
-                return;
-            }
-            for (Department d : college.getStudyDepartments()) {                                // checking for existing department
-                if (d.getName().equals(departmentName)) {                                       // if exist - continue
-                    selectedDepartment = d;
-                    existDep = true;
-                    break;
-                }
-            }
-            if (!existDep) {
-                System.out.println("Department does not exist...");
-            }
+        System.out.println(
+                "Enter a department: \n" +                                                  // reading a department
+                        "(enter '0' to return to menu)");
+        String departmentName = s.nextLine();
+        if (departmentName.equals("0")) {
+            return;
         }
-        float sum = 0;
-        Lecturer[] depLecturers = selectedDepartment.getLecturers();
-        for (int i = 0; i < selectedDepartment.getNumOfLecturers(); i++) {                     // calculating average
-            sum += depLecturers[i].getSalary();
+        Department department = new Department(departmentName);
+        float averageIncome = college.getDepLecturersIncome(department);                    // trying to calculate average income in department
+        if (averageIncome  == 0) {                                                          // printing result
+            System.out.println("Failed to display '" + departmentName +"' department's average salary, Error: " + ActionStatus.DEPARTMENT_NOT_EXIST);
         }
-        System.out.println("The average income of lecturers in '" + selectedDepartment.getName() + "' department is: " + (sum) / (selectedDepartment.getNumOfLecturers()));
+        else {
+            System.out.println("The average income of the lecturers in '" + departmentName + "' department is: " + averageIncome);
+        }
     }
 
     private static void showLecturers(College college) {
@@ -345,14 +334,13 @@ public class Main {
             }
         }
     }
-
-
-    private static String showMenu(Scanner s) {
+    
+    private static int showMenu(Scanner s) {
         System.out.println("\n====== Menu =======");
         for (int i = 0; i < MENU.length; i++) {
             System.out.println(i + ". " + MENU[i]);
         }
         System.out.println("Please choose one of the following options : ");
-        return s.next();
+        return s.nextInt();
     }
 }

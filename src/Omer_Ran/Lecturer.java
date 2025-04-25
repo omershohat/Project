@@ -7,10 +7,6 @@ public class Lecturer {
     private String major;
     private float salary;
     private Department department;
-    Department none = new Department("none", 0);
-
-    public Lecturer() {
-    }
 
     public Lecturer(String name, String id, DegreeLevel degreeLevel, String major, float salary, Department department) {
         this.name = name;
@@ -28,12 +24,12 @@ public class Lecturer {
         this.name = name;
     }
 
-    public DegreeLevel getDegreeLevel() {
-        return degreeLevel;
+    public String getName() {
+        return name;
     }
 
-    public void setDegreeLevel(DegreeLevel degreeLevel) {
-        this.degreeLevel = degreeLevel;
+    public DegreeLevel getDegreeLevel() {
+        return degreeLevel;
     }
 
     public float getSalary() {
@@ -46,18 +42,10 @@ public class Lecturer {
 
     public ActionStatus setDepartment(Department department) {
         this.department = department;
-        if (department !=null) {
+        if (department != null) {
             department.assign(this);
         }
         return ActionStatus.SUCCESS;
-    }
-
-    public void setNoneDepartment() {
-        this.department = none;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override
