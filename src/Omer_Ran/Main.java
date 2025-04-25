@@ -62,7 +62,7 @@ public class Main {
 
     private static void addLecturer(College college) {
         System.out.println(
-                "Enter lecturer name: \n" +
+                "Enter lecturer name: \n" +                                         // reading a lecturer name
                         "(enter '0' to return to menu)");
         String name = s.nextLine();
         if (name.equals("0")) {
@@ -70,7 +70,7 @@ public class Main {
         }
 
         System.out.println(
-                "Enter lecturer's ID: \n" +
+                "Enter lecturer's ID: \n" +                                         // reading a lecturer's ID
                         "(enter '0' to return to menu)");
         String id = s.next();
 
@@ -137,14 +137,14 @@ public class Main {
 
     private static void addCommittee(College college) {
         System.out.println(
-                "Enter a committee name: \n" +
+                "Enter a committee name: \n" +                                                          // reading a committee
                         "(enter '0' to return to menu)");
         String name = s.nextLine();
         if (name.equals("0")) {
             return;
         }
         System.out.println(
-                "Enter chairman's name: \n" +
+                "Enter chairman's name: \n" +                                                           // reading a committee
                         "(enter '0' to return to menu)");
         String lecturerName = s.nextLine();
         if (lecturerName.equals("0")) {
@@ -162,7 +162,7 @@ public class Main {
 
     private static void assignLecturerToComm(College college) {
         System.out.println(
-                "Choose a lecturer to assign: \n" +
+                "Choose a lecturer to assign: \n" +                                         // reading a lecturer
                         "(enter '0' to return to menu)");
         String lecturerName = s.nextLine();
         if (lecturerName.equals("0")) {
@@ -171,7 +171,7 @@ public class Main {
         Lecturer pendingLecturer = new Lecturer(lecturerName);
 
         System.out.println(
-                "Enter a committee: \n" +
+                "Enter a committee: \n" +                                                   // reading a committee
                         "(enter '0' to return to menu)");
         String committeeName = s.nextLine();
         if (committeeName.equals("0")) {
@@ -189,7 +189,7 @@ public class Main {
 
     private static void assignLecturerToDep(College college) {
         System.out.println(
-                "Choose a lecturer to assign: \n" +
+                "Choose a lecturer to assign: \n" +                                         // reading a lecturer
                         "(enter '0' to return to menu)");
         String lecturerName = s.nextLine();
         if (lecturerName.equals("0")) {
@@ -198,7 +198,7 @@ public class Main {
         Lecturer pendingLecturer = new Lecturer(lecturerName);
 
         System.out.println(
-                "Enter a department: \n" +
+                "Enter a department: \n" +                                                  // reading a department
                         "(enter '0' to return to menu)");
         String departmentName = s.nextLine();
         if (departmentName.equals("0")) {
@@ -271,14 +271,14 @@ public class Main {
     private static void addStudyDepartment(College college) {
         System.out.println(
                 "Enter a study department name: \n" +
-                        "(enter '0' or 'none' to return to menu)");                                          // reading a study department name
+                        "(enter '0' or 'none' to return to menu)");                                     // reading a study department name
         String name = s.nextLine();
         if (name.equals("0") || name.equals("none")) {
             return;
         }
         System.out.println(
                 "Enter the number of students in this department: \n" +
-                        "(enter '0' to return to menu)");                                                   // reading the number of student in department
+                        "(enter '0' to return to menu)");                                               // reading the number of student in department
         int studentCount = s.nextInt();
         s.nextLine();
 
@@ -294,7 +294,7 @@ public class Main {
     }
 
     private static void getAllLecturersIncome(College college) {
-        float sum = 0.0f;                                       // calculating average income of all lecturers in college
+        float sum = 0.0f;                                                           // calculating average income of all lecturers in college
         for (int i = 0; i < college.getNumOfLecturers(); i++) {
             sum += college.getLecturers()[i].getSalary();
         }
@@ -311,10 +311,9 @@ public class Main {
         }
         Department department = new Department(departmentName);
         float averageIncome = college.getDepLecturersIncome(department);                    // trying to calculate average income in department
-        if (averageIncome  == 0) {                                                          // printing result
-            System.out.println("Failed to display '" + departmentName +"' department's average salary, Error: " + ActionStatus.DEPARTMENT_NOT_EXIST);
-        }
-        else {
+        if (averageIncome == 0) {                                                          // printing result
+            System.out.println("Failed to display '" + departmentName + "' department's average salary, Error: " + ActionStatus.DEPARTMENT_NOT_EXIST);
+        } else {
             System.out.println("The average income of the lecturers in '" + departmentName + "' department is: " + averageIncome);
         }
     }
@@ -330,7 +329,7 @@ public class Main {
     private static void showCommittees(College college) {
         for (int i = 0; i < college.getNumOfCommittee(); i++) {
             if (college.getCommittees()[i] != null) {
-                System.out.println(college.getCommittees()[i]);
+                System.out.println(college.getCommittees()[i]);         // activating toString() method in Committee.class
             }
         }
     }
