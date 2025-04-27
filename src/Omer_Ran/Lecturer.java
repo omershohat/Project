@@ -61,7 +61,7 @@ public class Lecturer {
         committees[numOfCommittees++] = committee;                       // inserting committee to lecturer's committees array by index
     }
 
-    public String committeesDisplay() {
+    private String committeesDisplay() {
         sb = new StringBuilder();
         sb.append("[");
         for (int i = 0; i < numOfCommittees; i++) {

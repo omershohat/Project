@@ -54,7 +54,7 @@ public class College {
         return addLecturerFinal(lecturer);                                                                  // adding a new lecturer for general lecturers array
     }
 
-    public ActionStatus addLecturerFinal(Lecturer pendingLecturer) {
+    private ActionStatus addLecturerFinal(Lecturer pendingLecturer) {
         if (numOfLecturers == lecturers.length) {                                                           // making sure there's place for new lecturer
             lecturers = (Lecturer[]) resizeArr(lecturers);
         }
@@ -77,7 +77,7 @@ public class College {
         return addCommitteeFinal(committee);                                                    // adding a new committee for general committees array
     }
 
-    public ActionStatus addCommitteeFinal(Committee pendingCommittee) {
+    private ActionStatus addCommitteeFinal(Committee pendingCommittee) {
         if (numOfCommittee == committees.length) {                                              // making sure there's place for new committee
             committees = (Committee[]) resizeArr(committees);
         }
@@ -93,7 +93,7 @@ public class College {
         return addDepartmentFinal(department);                                              // else - add a new department to departments general array
     }
 
-    public ActionStatus addDepartmentFinal(Department pendingDepartment) {
+    private ActionStatus addDepartmentFinal(Department pendingDepartment) {
         if (numOfDeps == studyDepartments.length) {                                         // making sure there is place for new department
             studyDepartments = (Department[]) resizeArr(studyDepartments);
         }
