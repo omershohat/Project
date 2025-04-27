@@ -25,15 +25,14 @@ public class Main {
 
     public static void main(String[] args) {
         s = new Scanner(System.in);
-        College college = enterCollegeName(s);
+        College college = new College(enterCollegeName(s));
         run(college);
         s.close();
     }
 
-    private static College enterCollegeName(Scanner s) {
+    private static String enterCollegeName(Scanner s) {
         System.out.print("Please enter a college name: ");
-        College college = new College(s.next());
-        return college;
+        return s.next();
     }
 
     public static void run(College college) {

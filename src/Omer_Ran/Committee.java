@@ -1,13 +1,16 @@
 package Omer_Ran;
 
-import static Omer_Ran.ActionStatus.LECTURER_NOT_EXIST_IN_COMM;
+import static Omer_Ran.ActionStatus.*;
+import static Omer_Ran.Utils.removeObject;
 import static Omer_Ran.Utils.resizeArr;
+
 
 public class Committee {
     private String name;
     private Lecturer chairman;
     private Lecturer[] lecturers = new Lecturer[0];
     private int numOfLecturers;
+    private StringBuilder sb;
 
 
     public Committee(String name, Lecturer chairman) {
@@ -40,8 +43,8 @@ public class Committee {
         return numOfLecturers;
     }
 
-    public String getLecturersNames() {
-        StringBuilder sb = new StringBuilder();
+    public String lecturersDisplay() {
+        sb = new StringBuilder();
         sb.append("[");
         for (int i = 0; i < numOfLecturers; i++) {
             if ((lecturers[i] != null) && (!lecturers[i].getName().equals(chairman.getName()))) {
@@ -61,25 +64,17 @@ public class Committee {
         if (numOfLecturers == lecturers.length) {                   // making sure there is place for new lecturer
             lecturers = (Lecturer[]) resizeArr(lecturers);
         }
-        lecturers[numOfLecturers++] = lecturer;                     // inserting lecturer to committee array by index
+        lecturers[numOfLecturers++] = lecturer;                       // inserting lecturer to committee array by index
+        lecturer.addCommittee(this);
         return ActionStatus.SUCCESS;
     }
 
     public ActionStatus removeLecturer(Lecturer lecturer) {
-        for (int i = 0; i < numOfLecturers; i++) {                          // checking for existing lecturer
-            if (lecturers[i] == (lecturer)) {
-                for (int j = i; j < numOfLecturers - 1; j++) {              // if exist - from that lecturer index, shift all lecturers left
-                    if (lecturers[j] == null) {
-                        break;
-                    }
-                    lecturers[j] = lecturers[j + 1];
-                }
-                lecturers[numOfLecturers - 1] = null;                       // remove last doubled lecturer
-                numOfLecturers--;
-                return ActionStatus.SUCCESS;
-            }
+        if (removeObject(lecturer, lecturers, numOfLecturers)) {                            // trying to remove lecturer from that committee
+            numOfLecturers--;
+            return lecturer.removeCommittee(this);                                          // if done - try to remove committee from lecturer's committees array
         }
-        return LECTURER_NOT_EXIST_IN_COMM;                                  // if not exists - ERROR
+        return LECTURER_NOT_EXIST_IN_COMM;                                                  // if not done - ERROR
     }
 
     @Override
@@ -87,7 +82,7 @@ public class Committee {
         return "{" +
                 "name = '" + name + '\'' +
                 ", chairman = " + chairman.getName() +
-                ", lecturers = " + getLecturersNames() +
+                ", lecturers = " + lecturersDisplay() +
                 '}';
     }
 }

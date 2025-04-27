@@ -29,4 +29,20 @@ public class Utils {
         return null;
     }
 
+    static boolean removeObject(Object obj, Object[] objects, int numOfObjects) {
+        for (int i = 0; i < numOfObjects; i++) {                            // checking for existing object
+            if (objects[i] == (obj)) {
+                for (int j = i; j < numOfObjects - 1; j++) {                // if exist - from that object index, shift all objects left
+                    if (objects[j] == null) {
+                        break;
+                    }
+                    objects[j] = objects[j + 1];
+                }
+                objects[numOfObjects - 1] = null;                           // remove last doubled object
+                return true;
+            }
+        }
+        return false;                                                       // if not exists - ERROR
+    }
+
 }

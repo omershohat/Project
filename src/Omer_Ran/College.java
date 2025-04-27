@@ -1,52 +1,8 @@
 package Omer_Ran;
 
-import static Omer_Ran.Utils.*;
-import static Omer_Ran.ActionStatus.*;
-
-enum DegreeLevel {
-    BACHELORS("BA"),             // First degree
-    MASTERS("MA"),                 // Second degree
-    DOCTOR("Dr."),             // Dr.
-    PROFESSOR("PhD.");             // Professor
-    private final String description;
-
-    DegreeLevel(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return description;
-    }
-}
-
-enum ActionStatus {
-    SUCCESS("Success"),
-    LECTURER_EXIST("Lecturer already exists..."),
-    LECTURER_NOT_EXIST("Lecturer does not exist..."),
-    INVALID_CHOICE("Invalid choice."),
-    DEPARTMENT_NOT_EXIST("Department does not exist..."),
-    INVALID_SALARY("Invalid salary input. Salary must be 0 or above."),
-    COMMITTEE_EXIST("Committee already exists..."),
-    DEGREE_LEVEL_TOO_LOW("Lecturer must have a 'Dr.' degree or higher."),
-    DEPARTMENT_EXIST("Department already exists..."),
-    COMMITTEE_NOT_EXIST("Committee does not exists..."),
-    LECTURER_EXIST_IN_COMM("Lecturer already exists in selected committee..."),
-    LECTURER_IS_CHAIRMAN("Lecturer already exists in selected committee as the chairman."),
-    LECTURER_IN_DEP("Lecturer already exists in selected department..."),
-    LECTURER_NOT_EXIST_IN_COMM("Lecturer does not exist in selected committee.");
-
-    private final String description;
-
-    ActionStatus(String description) {
-        this.description = description;
-    }
-
-    @Override
-    public String toString() {
-        return description;
-    }
-}
+import static Omer_Ran.ActionStatus. *;
+import static Omer_Ran.Utils.findObject;
+import static Omer_Ran.Utils.resizeArr;
 
 public class College {
     private String collegeName;

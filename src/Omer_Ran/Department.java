@@ -21,12 +21,11 @@ public class Department {
         return name;
     }
 
-    public ActionStatus assign(Lecturer lecturer) {
+    public void assign(Lecturer lecturer) {
         if (numOfLecturers == lecturers.length) {                   // making sure there is place for new lecturer
             lecturers = (Lecturer[]) resizeArr(lecturers);
         }
         lecturers[numOfLecturers++] = lecturer;                     // inserting lecturer to department array by index
-        return ActionStatus.SUCCESS;
     }
 
     public float getLecturersIncome() {
