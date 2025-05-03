@@ -1,6 +1,8 @@
 package Omer_Ran;
 
 import static Omer_Ran.ActionStatus. *;
+import static Omer_Ran.DegreeLevel.BACHELORS;
+import static Omer_Ran.DegreeLevel.DOCTOR;
 import static Omer_Ran.Utils.findObject;
 import static Omer_Ran.Utils.resizeArr;
 
@@ -177,5 +179,30 @@ public class College {
         else {
             return 0;                                                                           // if not - return 0
         }
+    }
+
+    public void init(){
+        lecturers = new Lecturer[10];
+        studyDepartments = new Department[10];
+        committees = new Committee[10];
+
+         Department kokod = new Department("kokod", 12);
+        studyDepartments[numOfDeps++] = kokod;
+
+        Lecturer omer = new Lecturer("omer","315854091",DOCTOR,"ART",54.1f,studyDepartments[0]);
+        omer.setDepartment(kokod);
+        lecturers[numOfLecturers++] = omer;
+
+        Lecturer ran = new Lecturer("ran","3151",DOCTOR,"ART",32.3f,studyDepartments[0]);
+        ran.setDepartment(kokod);
+        lecturers[numOfLecturers++] = ran;
+
+        Lecturer koz = new Lecturer("koz","12345",BACHELORS,"ART",36.31f,studyDepartments[0]);
+        koz.setDepartment(kokod);
+        lecturers[numOfLecturers++] = koz;
+
+        Committee kokoc = new Committee("kokoc",lecturers[0]);
+        committees[numOfCommittee++] = kokoc;
+        kokoc.setChairman(omer);
     }
 }

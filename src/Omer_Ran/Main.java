@@ -26,7 +26,8 @@ public class Main {
     public static void main(String[] args) {
         s = new Scanner(System.in);
         College college = new College(enterCollegeName(s));
-        run(college);
+        college.init();
+        run(college, s);
         s.close();
     }
 
@@ -35,8 +36,7 @@ public class Main {
         return s.next();
     }
 
-    public static void run(College college) {
-        s = new Scanner(System.in);
+    public static void run(College college, Scanner s) {
         int userChose;
         do {
             userChose = showMenu(s);
@@ -72,6 +72,9 @@ public class Main {
                 "Enter lecturer's ID: \n" +                                         // reading a lecturer's ID
                         "(enter '0' to return to menu)");
         String id = s.next();
+        if (id.equals("0")) {
+            return;
+        }
 
         DegreeLevel[] degreeLevels = DegreeLevel.values();                          // reading degree level of the lecturer
         DegreeLevel degreeLevel = null;
