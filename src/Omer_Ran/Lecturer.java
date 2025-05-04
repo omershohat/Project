@@ -3,7 +3,8 @@ package Omer_Ran;
 import static Omer_Ran.Utils.removeObject;
 import static Omer_Ran.Utils.resizeArr;
 
-public class Lecturer {
+public class
+Lecturer {
     private String name;
     private String id;
     private DegreeLevel degreeLevel;

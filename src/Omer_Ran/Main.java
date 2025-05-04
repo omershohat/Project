@@ -89,7 +89,7 @@ public class Main {
             degreeChoice = s.nextInt();
             if (degreeChoice == 0) {
                 return;
-            } else if (1 <= degreeChoice && degreeChoice <= 4) {                    // checking if choice is valid
+            } else if (1 <= degreeChoice && degreeChoice <= degreeLevels.length) {                    // checking if choice is valid
                 degreeLevel = degreeLevels[degreeChoice - 1];
                 valid = true;
             } else {
