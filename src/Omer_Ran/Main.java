@@ -26,14 +26,9 @@ public class Main {
     public static void main(String[] args) {
         s = new Scanner(System.in);
         College college = new College(enterCollegeName(s));
-        college.init();
+//        college.init();
         run(college, s);
         s.close();
-    }
-
-    private static String enterCollegeName(Scanner s) {
-        System.out.print("Please enter a college name: ");
-        return s.next();
     }
 
     public static void run(College college, Scanner s) {
@@ -343,5 +338,10 @@ public class Main {
         }
         System.out.println("Please choose one of the following options : ");
         return s.nextInt();
+    }
+
+    private static String enterCollegeName(Scanner s) {
+        System.out.print("Please enter a college name: ");
+        return s.next();
     }
 }
