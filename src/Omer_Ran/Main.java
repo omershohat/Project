@@ -1,8 +1,7 @@
 package Omer_Ran;
 
-import javax.naming.Name;
+
 import java.util.InputMismatchException;
-import java.util.NavigableMap;
 import java.util.Scanner;
 
 // Omer 315854091

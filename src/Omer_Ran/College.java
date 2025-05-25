@@ -1,6 +1,5 @@
 package Omer_Ran;
 
-import static Omer_Ran.ActionStatus. *;
 import static Omer_Ran.DegreeLevel.BACHELORS;
 import static Omer_Ran.DegreeLevel.DOCTOR;
 import static Omer_Ran.Utils.findObject;

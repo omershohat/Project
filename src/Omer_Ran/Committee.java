@@ -1,6 +1,5 @@
 package Omer_Ran;
 
-import static Omer_Ran.ActionStatus.*;
 import static Omer_Ran.Utils.removeObject;
 import static Omer_Ran.Utils.resizeArr;
 
