@@ -3,8 +3,7 @@ package Omer_Ran;
 import static Omer_Ran.Utils.removeObject;
 import static Omer_Ran.Utils.resizeArr;
 
-public class
-Lecturer {
+public class Lecturer implements Nameable {
     private String name;
     private String id;
     private DegreeLevel degreeLevel;
@@ -47,12 +46,11 @@ Lecturer {
         return department;
     }
 
-    public ActionStatus setDepartment(Department department) {
+    public void setDepartment(Department department) {
         this.department = department;
         if (department != null) {
             department.assign(this);
         }
-        return ActionStatus.SUCCESS;
     }
 
     public void addCommittee(Committee committee) {
@@ -78,25 +76,24 @@ Lecturer {
         return sb.toString();
     }
 
-    public ActionStatus removeCommittee(Committee committee) {
-        if (removeObject(committee, committees, numOfCommittees)) {                                         // trying to remove committee from lecturer's committees array
+    public void removeCommittee(Committee committee) {
+        if (removeObject(committee, committees, numOfCommittees)) {                    // trying to remove committee from lecturer's committees array
             numOfCommittees--;
-            return ActionStatus.SUCCESS;                                                                    // if done - SUCCESS
+            return;                                                                    // if done - SUCCESS
         }
-        return ActionStatus.COMMITTEE_NOT_EXIST_IN_LEC;                                                     // if not done - ERROR
+        throw new NotExistException("Lecturer is not assigned to that committee.");                                                     // if not done - ERROR
     }
 
     @Override
     public String toString() {
-        return "{" +
+        return
                 "name = '" + name + '\'' +
                 ", id = '" + id + '\'' +
                 ", degreeLevel = " + degreeLevel +
                 ", major = '" + major + '\'' +
                 ", salary = " + salary +
                 ", department = " + (department == null ? "none" : department.getName()) +
-                ", committees = " + committeesDisplay() +
-                '}';
+                ", committees = " + committeesDisplay();
     }
 
 

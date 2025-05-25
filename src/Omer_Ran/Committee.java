@@ -5,7 +5,7 @@ import static Omer_Ran.Utils.removeObject;
 import static Omer_Ran.Utils.resizeArr;
 
 
-public class Committee {
+public class Committee implements Nameable {
     private String name;
     private Lecturer chairman;
     private Lecturer[] lecturers = new Lecturer[0];
@@ -30,9 +30,8 @@ public class Committee {
         return chairman;
     }
 
-    public ActionStatus setChairman(Lecturer chairman) {
+    public void setChairman(Lecturer chairman) {
         this.chairman = chairman;
-        return ActionStatus.SUCCESS;
     }
 
     public Lecturer[] getLecturers() {
@@ -60,21 +59,21 @@ public class Committee {
         return sb.toString();
     }
 
-    public ActionStatus assign(Lecturer lecturer) {
+    public void assign(Lecturer lecturer) {
         if (numOfLecturers == lecturers.length) {                   // making sure there is place for new lecturer
             lecturers = (Lecturer[]) resizeArr(lecturers);
         }
         lecturers[numOfLecturers++] = lecturer;                       // inserting lecturer to committee array by index
         lecturer.addCommittee(this);
-        return ActionStatus.SUCCESS;
     }
 
-    public ActionStatus removeLecturer(Lecturer lecturer) {
+    public void removeLecturer(Lecturer lecturer) {
         if (removeObject(lecturer, lecturers, numOfLecturers)) {                            // trying to remove lecturer from that committee
             numOfLecturers--;
-            return lecturer.removeCommittee(this);                                          // if done - try to remove committee from lecturer's committees array
+            lecturer.removeCommittee(this);                                          // if done - try to remove committee from lecturer's committees array
+            return;
         }
-        return LECTURER_NOT_EXIST_IN_COMM;                                                  // if not done - ERROR
+        throw new NotExistException(lecturer, this);                                 // if not done - ERROR
     }
 
     @Override

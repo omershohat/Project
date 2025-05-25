@@ -2,7 +2,7 @@ package Omer_Ran;
 
 import static Omer_Ran.Utils.resizeArr;
 
-public class Department {
+public class Department implements Nameable {
     private String name;
     private int studentCount;
     private Lecturer[] lecturers = new Lecturer[0];

@@ -1,5 +1,8 @@
 package Omer_Ran;
 
+import javax.naming.Name;
+import java.util.InputMismatchException;
+import java.util.NavigableMap;
 import java.util.Scanner;
 
 // Omer 315854091
@@ -26,35 +29,46 @@ public class Main {
     public static void main(String[] args) {
         s = new Scanner(System.in);
         College college = new College(enterCollegeName(s));
-//        college.init();
+        college.init();
         run(college, s);
         s.close();
     }
 
     public static void run(College college, Scanner s) {
         int userChose;
-        do {
-            userChose = showMenu(s);
-            s.nextLine();
-            switch (userChose) {
-                case 0 -> System.out.println("Done... Bye");
-                case 1 -> addLecturer(college);                    // v
-                case 2 -> addCommittee(college);                   // v
-                case 3 -> assignLecturerToComm(college);           // v
-                case 4 -> assignLecturerToDep(college);            // v
-                case 5 -> updateCommChairman(college);             // v
-                case 6 -> removeLecturerFromComm(college);         // v
-                case 7 -> addStudyDepartment(college);             // v
-                case 8 -> getAllLecturersIncome(college);          // v
-                case 9 -> getDepLecturersIncome(college);          // v
-                case 10 -> showLecturers(college);                 // v
-                case 11 -> showCommittees(college);                // v
-                default -> System.out.println("Unexpected value!");
+        while (true) {
+            showMenu();
+            try {
+                userChose = s.nextInt();
+                s.nextLine();
+                switch (userChose) {
+                    case 0 -> {
+                        System.out.println("Done... Bye");
+                        return;
+                    }
+                    case 1 -> addLecturer(college);                    // v
+                    case 2 -> addCommittee(college);                   // v
+                    case 3 -> assignLecturerToComm(college);           // v
+                    case 4 -> assignLecturerToDep(college);            // v
+                    case 5 -> updateCommChairman(college);             // v
+                    case 6 -> removeLecturerFromComm(college);         // v
+                    case 7 -> addStudyDepartment(college);             // v
+                    case 8 -> getAllLecturersIncome(college);
+                    case 9 -> getDepLecturersIncome(college);          // v
+                    case 10 -> showLecturers(college);
+                    case 11 -> showCommittees(college);
+                    default -> {
+                        System.out.println("Unexpected value!");
+                    }
+                }
+            } catch (InputMismatchException ime) {
+                System.out.println("Invalid input.");
+                s.nextLine();
             }
-        } while (userChose != 0);
+        }
     }
 
-    private static void addLecturer(College college) {
+    private static void addLecturer(College college) throws CollegeExceptions {
         System.out.println(
                 "Enter lecturer name: \n" +                                         // reading a lecturer name
                         "(enter '0' to return to menu)");
@@ -69,27 +83,6 @@ public class Main {
         String id = s.next();
         if (id.equals("0")) {
             return;
-        }
-
-        DegreeLevel[] degreeLevels = DegreeLevel.values();                          // reading degree level of the lecturer
-        DegreeLevel degreeLevel = null;
-        int degreeChoice;
-        boolean valid = false;
-        while (!valid) {
-            System.out.println("Choose degree level: ");
-            for (int i = 0; i < DegreeLevel.values().length; i++) {
-                System.out.println(i + 1 + ". " + DegreeLevel.values()[i]);
-            }
-            System.out.println("(enter '0' to return to menu)");
-            degreeChoice = s.nextInt();
-            if (degreeChoice == 0) {
-                return;
-            } else if (1 <= degreeChoice && degreeChoice <= degreeLevels.length) {                    // checking if choice is valid
-                degreeLevel = degreeLevels[degreeChoice - 1];
-                valid = true;
-            } else {
-                System.out.println(ActionStatus.INVALID_CHOICE);
-            }
         }
 
         String major;                                                               // reading major of lecturer
@@ -121,15 +114,54 @@ public class Main {
         }
         Department department = new Department(departmentName);                                         // creating a pending department
 
-        ActionStatus res = college.addLecturer(name, id, degreeLevel, major, salary, department);       // trying to add lecturer
-        if (!res.equals(ActionStatus.SUCCESS)) {                                                        // printing result
-            System.out.println("Failed to add the lecturer '" + name + "', Error: " + res);
-            if (res.equals(ActionStatus.LECTURER_EXIST)) {
-                addLecturer(college);
+        DegreeLevel[] degreeLevels = DegreeLevel.values();                          // reading degree level of the lecturer
+        DegreeLevel degreeLevel = null;
+        int degreeChoice;
+        boolean valid = false;
+        while (!valid) {
+            System.out.println("Choose degree level: ");
+            for (int i = 0; i < DegreeLevel.values().length; i++) {
+                System.out.println(i + 1 + ". " + DegreeLevel.values()[i]);
             }
+            System.out.println("(enter '0' to return to menu)");
+            degreeChoice = s.nextInt();
+            if (degreeChoice == 0) {
+                return;
+            } else if (1 <= degreeChoice && degreeChoice <= degreeLevels.length) {      // checking if choice is valid
+                degreeLevel = degreeLevels[degreeChoice - 1];
+                valid = true;
+            } else {
+                System.out.println("Invalid choice.");
+            }
+        }
+
+        String[] articles = null;
+        if (degreeLevel == DegreeLevel.PROFESSOR || degreeLevel == DegreeLevel.DOCTOR) {
+            System.out.println("Please enter your published articles (separated with ', '): ");
+            String input = s.nextLine();
+            articles = input.split(", ");
+        }
+        String certifyingInst = null;
+        if (degreeLevel == DegreeLevel.PROFESSOR) {
+            System.out.println("Please enter your certifying institution: ");
+            certifyingInst = s.nextLine();
+        }
+
+        try {
+            college.addLecturer(name, id, degreeLevel, major, salary, department, articles, certifyingInst);
+        } catch (ExistException ise) {
+            printAddLecturerFailure(name, ise);
+            addLecturer(college);
+        } catch (InvalidInputException iie) {
+            printAddLecturerFailure(name, iie);
             return;
         }
+
         System.out.println("The new lecturer '" + name + "' has been added successfully!");
+    }
+    private static void printAddLecturerFailure(String name, InvalidInputException iie) {
+        System.out.println("Failed to add the lecturer '" + name + "'.");
+        System.out.println(iie.getMessage());
     }
 
     private static void addCommittee(College college) {
@@ -149,12 +181,17 @@ public class Main {
         }
         Lecturer chairman = new Lecturer(lecturerName);
 
-        ActionStatus res = college.addCommittee(name, chairman);                                        // trying to add committee
-        if (!res.equals(ActionStatus.SUCCESS)) {                                                        // printing result
-            System.out.println("Failed to add the committee '" + name + "', Error: " + res);
+        try {
+            college.addCommittee(name, chairman);
+        } catch (InvalidInputException e) {
+            printAddCommitteeFailure(name, e);
             return;
         }
         System.out.println("The new committee '" + name + "' has been added successfully!");
+    }
+    private static void printAddCommitteeFailure(String name, CollegeExceptions ce) {
+        System.out.println("Failed to add the committee '" + name + "'.");
+        System.out.println(ce.getMessage());
     }
 
     private static void assignLecturerToComm(College college) {
@@ -175,13 +212,13 @@ public class Main {
             return;
         }
         Committee pendingCommittee = new Committee(committeeName);
-
-        ActionStatus res = college.assignLecToComm(pendingLecturer, pendingCommittee);       // trying to assign
-        if (!res.equals(ActionStatus.SUCCESS)) {                                            // printing result
-            System.out.println("Failed to assign '" + lecturerName + "' to '" + committeeName + "' committee, Error: " + res);
-        } else {
-            System.out.println("'" + lecturerName + "' was assigned to '" + committeeName + "' committee successfully!");
+        try {
+            college.assignLecToComm(pendingLecturer, pendingCommittee);       // trying to assign
+        } catch (InvalidInputException iie) {
+            printAssignmentFailure(pendingLecturer,pendingCommittee,iie);
+            return;
         }
+        System.out.println("'" + lecturerName + "' was assigned to '" + committeeName + "' committee successfully!");
     }
 
     private static void assignLecturerToDep(College college) {
@@ -203,12 +240,17 @@ public class Main {
         }
         Department pendingDepartment = new Department(departmentName);
 
-        ActionStatus res = college.assignLecToDep(pendingLecturer, pendingDepartment);       // trying to assign
-        if (!res.equals(ActionStatus.SUCCESS)) {                                            // printing result
-            System.out.println("Failed to assign '" + lecturerName + "' to '" + departmentName + "' department, Error: " + res);
-        } else {
-            System.out.println("'" + lecturerName + "' was assigned to '" + departmentName + "' department successfully!");
+        try {
+            college.assignLecToDep(pendingLecturer, pendingDepartment);       // trying to assign
+        } catch (InvalidInputException iie) {
+            printAssignmentFailure(pendingLecturer,pendingDepartment,iie);
+            return;
         }
+        System.out.println("'" + lecturerName + "' was assigned to '" + departmentName + "' department successfully!");
+    }
+    private static void printAssignmentFailure(Nameable na, Nameable toNa, InvalidInputException iie) {
+        System.out.println("Failed to assign '" + na.getName() + "' to '" + toNa.getName() + "' " + toNa.getClass().getSimpleName() + ".");
+        System.out.println(iie.getMessage());
     }
 
     private static void updateCommChairman(College college) {
@@ -230,12 +272,14 @@ public class Main {
         }
         Lecturer lecturer = new Lecturer(lecturerName);
 
-        ActionStatus res = college.updateCommChairman(lecturer, committee);             // trying to assign a new chairman
-        if (!res.equals(ActionStatus.SUCCESS)) {                                        // printing result
-            System.out.println("Failed to update '" + lecturerName + "' as the new chairman of '" + committeeName + "' committee, Error: " + res);
-        } else {
-            System.out.println("'" + lecturerName + "' was set to be the chairman of '" + committeeName + "' committee.");
+        try {
+            college.updateCommChairman(lecturer, committee);                            // trying to assign a new chairman
+        } catch (CollegeExceptions ce) {
+            System.out.println("Failed to assign '" + lecturerName + "' to be chairman of '" + committeeName + " committee.");
+            System.out.println(ce.getMessage());
+            return;
         }
+        System.out.println("'" + lecturerName + "' was set to be the chairman of '" + committeeName + "' committee.");
     }
 
     private static void removeLecturerFromComm(College college) {
@@ -257,12 +301,14 @@ public class Main {
         }
         Lecturer lecturer = new Lecturer(lecturerName);
 
-        ActionStatus res = college.removeLecturerFromComm(lecturer, committee);                  // trying to remove lecturer from committee
-        if (!res.equals(ActionStatus.SUCCESS)) {                                                // printing result
-            System.out.println("Failed to remove '" + lecturerName + "' from '" + committeeName + "' committee, Error: " + res);
-        } else {
-            System.out.println("'" + lecturerName + "' was removed from '" + committeeName + "' committee successfully!");
+        try {
+            college.removeLecturerFromComm(lecturer, committee);                  // trying to remove lecturer from committee
+        } catch (NotExistException nee) {
+            System.out.println("Failed to remove '" + lecturerName + "' from '" + committeeName + "' committee.");
+            System.out.println(nee.getMessage());
+            return;
         }
+        System.out.println("'" + lecturerName + "' was removed from '" + committeeName + "' committee successfully!");
     }
 
     private static void addStudyDepartment(College college) {
@@ -279,13 +325,12 @@ public class Main {
         int studentCount = s.nextInt();
         s.nextLine();
 
-        ActionStatus res = college.addDepartment(name, studentCount);                                   // trying to add studyDepartment
-        if (!res.equals(ActionStatus.SUCCESS)) {                                                        // printing result
-            System.out.println("Failed to add the department '" + name + "', Error: " + res);
-            if (res.equals(ActionStatus.DEPARTMENT_EXIST)) {
-                addStudyDepartment(college);
-            }
-            return;
+        try {
+            college.addDepartment(name, studentCount);                                   // trying to add studyDepartment
+        } catch (ExistException ee) {
+            System.out.println("Failed to add the department '" + name + "'.");
+            System.out.println(ee.getMessage());
+            addStudyDepartment(college);
         }
         System.out.println("The new study department '" + name + "' has been added successfully!");
     }
@@ -307,12 +352,14 @@ public class Main {
             return;
         }
         Department department = new Department(departmentName);
-        float averageIncome = college.getDepLecturersIncome(department);                    // trying to calculate average income in department
-        if (averageIncome == 0) {                                                          // printing result
-            System.out.println("Failed to display '" + departmentName + "' department's average salary, Error: " + ActionStatus.DEPARTMENT_NOT_EXIST);
-        } else {
+        try {
+            float averageIncome = college.getDepLecturersIncome(department);                    // trying to calculate average income in department
             System.out.println("The average income of the lecturers in '" + departmentName + "' department is: " + averageIncome);
+        } catch (NotExistException nee) {
+            System.out.println("Failed to display '" + departmentName + "' department's average salary");
+            System.out.println(nee.getMessage());
         }
+
     }
 
     private static void showLecturers(College college) {
@@ -331,13 +378,12 @@ public class Main {
         }
     }
 
-    private static int showMenu(Scanner s) {
+    private static void showMenu() {
         System.out.println("\n====== Menu =======");
         for (int i = 0; i < MENU.length; i++) {
             System.out.println(i + ". " + MENU[i]);
         }
         System.out.println("Please choose one of the following options : ");
-        return s.nextInt();
     }
 
     private static String enterCollegeName(Scanner s) {
