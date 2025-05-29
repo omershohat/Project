@@ -1,6 +1,5 @@
 package Omer_Ran;
 
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -20,15 +19,21 @@ public class Main {
             "View average income of all lecturers in college",
             "View average income of all lecturers in a specific study department",
             "Lecturers details",
-            "Committees details"
+            "Committees details",
+            "Compare Doctor/Professor by number of articles",
+            "Compare committees"
     };
+
+    private static final String[] COMPARE_METHODS = {"return to main menu",
+                                                    "By members amount",
+                                                    "By sum of articles"};
 
     private static Scanner s;
 
     public static void main(String[] args) {
         s = new Scanner(System.in);
         College college = new College(enterCollegeName(s));
-        college.init();
+//        college.init();
         run(college, s);
         s.close();
     }
@@ -41,23 +46,25 @@ public class Main {
                 userChose = s.nextInt();
                 s.nextLine();
                 switch (userChose) {
-                    case 0 -> {
+                    case 0 -> {                                         // v
                         System.out.println("Done... Bye");
                         return;
                     }
-                    case 1 -> addLecturer(college);                    // v
-                    case 2 -> addCommittee(college);                   // v
-                    case 3 -> assignLecturerToComm(college);           // v
-                    case 4 -> assignLecturerToDep(college);            // v
-                    case 5 -> updateCommChairman(college);             // v
-                    case 6 -> removeLecturerFromComm(college);         // v
-                    case 7 -> addStudyDepartment(college);             // v
-                    case 8 -> getAllLecturersIncome(college);
-                    case 9 -> getDepLecturersIncome(college);          // v
-                    case 10 -> showLecturers(college);
-                    case 11 -> showCommittees(college);
+                    case 1 -> addLecturer(college);                     // v
+                    case 2 -> addCommittee(college);                    // v
+                    case 3 -> assignLecturerToComm(college);            // v
+                    case 4 -> assignLecturerToDep(college);             // v
+                    case 5 -> updateCommChairman(college);              // v
+                    case 6 -> removeLecturerFromComm(college);          // v
+                    case 7 -> addStudyDepartment(college);              // v
+                    case 8 -> getAllLecturersIncome(college);           // v
+                    case 9 -> getDepLecturersIncome(college);           // v
+                    case 10 -> showLecturers(college);                  // v
+                    case 11 -> showCommittees(college);                 // v
+                    case 12 -> CompareArticlesHolders(college);         // v
+                    case 13 -> compareCommittees(college);              // v
                     default -> {
-                        System.out.println("Unexpected value!");
+                        System.out.println("Unexpected value!");        // v
                     }
                 }
             } catch (InputMismatchException ime) {
@@ -66,6 +73,7 @@ public class Main {
             }
         }
     }
+
 
     private static void addLecturer(College college) throws CollegeExceptions {
         System.out.println(
@@ -111,7 +119,7 @@ public class Main {
         if (departmentName.equals("0")) {
             return;
         }
-        Department department = new Department(departmentName);                                         // creating a pending department
+        Department department = new Department(departmentName);                     // creating a pending department
 
         DegreeLevel[] degreeLevels = DegreeLevel.values();                          // reading degree level of the lecturer
         DegreeLevel degreeLevel = null;
@@ -133,6 +141,7 @@ public class Main {
                 System.out.println("Invalid choice.");
             }
         }
+        s.nextLine();
 
         String[] articles = null;
         if (degreeLevel == DegreeLevel.PROFESSOR || degreeLevel == DegreeLevel.DOCTOR) {
@@ -374,6 +383,46 @@ public class Main {
             if (college.getCommittees()[i] != null) {
                 System.out.println(college.getCommittees()[i]);         // activating toString() method in Committee.class
             }
+        }
+    }
+
+    private static void CompareArticlesHolders(College college) {
+        System.out.println("Please enter first lecturer (must be doctor or professor):");
+        Lecturer fstLec = new Lecturer(s.nextLine());
+        System.out.println("Please enter second lecturer (must be doctor or professor):");
+        Lecturer scdLec = new Lecturer(s.nextLine());
+        int a = college.compareLecArticles(fstLec,scdLec);
+        if (a > 0) {
+            printArticlesHoldersResult(fstLec,scdLec);
+        } else if (a < 0) {
+            printArticlesHoldersResult(scdLec,fstLec);
+        } else {
+            System.out.println("Both lecturers have the same number of articles.");
+        }
+    }
+    private static void printArticlesHoldersResult(Lecturer lecGreater, Lecturer lecLesser) {
+        System.out.println(lecGreater.getName() + " has more articles than " + lecLesser.getName() + ".");
+    }
+
+    private static void compareCommittees(College college) {
+        System.out.println("Please enter first committee: ");
+        String comName1 = s.nextLine();
+        Committee fstCom = new Committee(comName1);
+        System.out.println("Please enter second committee: ");
+        String comName2 = s.nextLine();
+        Committee scdCom = new Committee(comName2);
+        System.out.println("Please choose preferred method to compare with: ");
+        for (int i = 0; i < COMPARE_METHODS.length; i++) {
+            System.out.println(i + ". " + COMPARE_METHODS[i]);
+        }
+        int prefMethod = s.nextInt();
+        if (prefMethod == 0) {
+            return;
+        }
+        try{
+            System.out.println(college.compareComms(fstCom,scdCom,prefMethod));
+        } catch (InvalidInputException iie) {
+            System.out.println(iie.getMessage());
         }
     }
 

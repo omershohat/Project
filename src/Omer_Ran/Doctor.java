@@ -1,6 +1,6 @@
 package Omer_Ran;
 
-public class Doctor extends Lecturer  {
+public class Doctor extends Lecturer implements Comparable <Doctor> {
     private String[] articles;
     public Doctor(String name, String id, DegreeLevel degreeLevel, String major, float salary, Department department, String[] articles) {
         super(name, id, degreeLevel, major, salary, department);
@@ -26,5 +26,14 @@ public class Doctor extends Lecturer  {
     @Override
     public String toString() {
         return super.toString() + ", articles = " + articlesDisplay();
+    }
+
+    public String[] getArticles() {
+        return articles;
+    }
+
+    @Override
+    public int compareTo(Doctor o) {
+        return Integer.compare(articles.length, o.articles.length);
     }
 }

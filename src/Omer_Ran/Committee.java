@@ -1,5 +1,7 @@
 package Omer_Ran;
 
+import java.util.Comparator;
+
 import static Omer_Ran.Utils.removeObject;
 import static Omer_Ran.Utils.resizeArr;
 
@@ -73,6 +75,16 @@ public class Committee implements Nameable {
             return;
         }
         throw new NotExistException(lecturer, this);                                 // if not done - ERROR
+    }
+
+    public int getSumOfArticles() {
+        int sum = 0 ;
+        for (int i = 0; i < numOfLecturers; i++) {
+            if (lecturers[i] instanceof Doctor lec) {
+                sum += lec.getArticles().length;
+            }
+        }
+        return sum;
     }
 
     @Override
