@@ -6,13 +6,16 @@ import static Omer_Ran.Utils.removeObject;
 import static Omer_Ran.Utils.resizeArr;
 
 
-public class Committee implements Nameable {
+public class Committee implements Nameable, Cloneable{
     private String name;
     private Lecturer chairman;
     private Lecturer[] lecturers = new Lecturer[0];
     private int numOfLecturers;
     private StringBuilder sb;
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Committee(String name, Lecturer chairman) {
         this.name = name;
@@ -94,5 +97,16 @@ public class Committee implements Nameable {
                 ", chairman = " + chairman.getName() +
                 ", lecturers = " + lecturersDisplay() +
                 '}';
+    }
+
+    @Override
+    protected Committee clone() throws CloneNotSupportedException {
+        Committee c1 = (Committee) super.clone();
+        c1.lecturers = lecturers.clone();
+        for (int i = 0; i < numOfLecturers ; i++) {
+            c1.lecturers[i].addCommittee(c1);
+        }
+        c1.setName(name + "-new");
+        return c1;
     }
 }

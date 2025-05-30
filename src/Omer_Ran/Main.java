@@ -21,7 +21,8 @@ public class Main {
             "Lecturers details",
             "Committees details",
             "Compare Doctor/Professor by number of articles",
-            "Compare committees"
+            "Compare committees",
+            "Clone a committee"
     };
 
     private static final String[] COMPARE_METHODS = {"return to main menu",
@@ -30,7 +31,7 @@ public class Main {
 
     private static Scanner s;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         s = new Scanner(System.in);
         College college = new College(enterCollegeName(s));
 //        college.init();
@@ -38,7 +39,7 @@ public class Main {
         s.close();
     }
 
-    public static void run(College college, Scanner s) {
+    public static void run(College college, Scanner s) throws CloneNotSupportedException {
         int userChose;
         while (true) {
             showMenu();
@@ -61,8 +62,9 @@ public class Main {
                     case 9 -> getDepLecturersIncome(college);           // v
                     case 10 -> showLecturers(college);                  // v
                     case 11 -> showCommittees(college);                 // v
-                    case 12 -> CompareArticlesHolders(college);         // v
+                    case 12 -> compareArticlesHolders(college);         // v
                     case 13 -> compareCommittees(college);              // v
+                    case 14 -> cloneCommittee(college);
                     default -> {
                         System.out.println("Unexpected value!");        // v
                     }
@@ -386,7 +388,7 @@ public class Main {
         }
     }
 
-    private static void CompareArticlesHolders(College college) {
+    private static void compareArticlesHolders(College college) {
         System.out.println("Please enter first lecturer (must be doctor or professor):");
         Lecturer fstLec = new Lecturer(s.nextLine());
         System.out.println("Please enter second lecturer (must be doctor or professor):");
@@ -424,6 +426,27 @@ public class Main {
         } catch (InvalidInputException iie) {
             System.out.println(iie.getMessage());
         }
+    }
+
+    private static void cloneCommittee(College college) throws CloneNotSupportedException {
+        System.out.println(
+                "Enter a committee to clone: \n" +                                                   // reading a committee
+                        "(enter '0' to return to menu)");
+        String committeeName = s.nextLine();
+        if (committeeName.equals("0")) {
+            return;
+        }
+        Committee originalCom = new Committee(committeeName);
+        try {
+            college.cloneCom(originalCom);
+        } catch (NotExistException nee) {
+            System.out.println("Failed to clone '" + committeeName + "' committee.");
+            System.out.println(nee.getMessage());
+            return;
+        }
+        System.out.println("'" + committeeName + "' committee was cloned successfully!");
+        System.out.println("'" + committeeName + "-new' committee has been added.");
+
     }
 
     private static void showMenu() {

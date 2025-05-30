@@ -95,6 +95,4 @@ public class Lecturer implements Nameable {
                 ", department = " + (department == null ? "none" : department.getName()) +
                 ", committees = " + committeesDisplay();
     }
-
-
 }

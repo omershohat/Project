@@ -250,6 +250,15 @@ public class College {
         }
     }
 
+    public void cloneCom(Committee originalCom) throws CloneNotSupportedException {
+        Committee com1 = (Committee) findObject(committees, numOfCommittee, originalCom);
+        if (com1 == null) {
+            throw new NotExistException(originalCom);
+        }
+        Committee comCloned = com1.clone();
+        addCommitteeFinal(comCloned);
+    }
+
     public void init(){
         lecturers = new Lecturer[10];
         studyDepartments = new Department[10];
@@ -278,6 +287,4 @@ public class College {
         committees[numOfCommittee++] = kokoc;
         kokoc.setChairman(omer);
     }
-
-
 }
