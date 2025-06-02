@@ -35,7 +35,7 @@ public class Main {
     public static void main(String[] args) throws CloneNotSupportedException {
         s = new Scanner(System.in);
         College college = new College(enterCollegeName(s));
-//        college.init();
+        college.init();
         run(college, s);
         s.close();
     }
@@ -390,35 +390,42 @@ public class Main {
     }
 
     private static void compareArticlesHolders(College college) {
-        System.out.println("Please enter first lecturer (must be doctor or professor):");   // reading first lecturer
-        Lecturer fstLec = new Lecturer(s.nextLine());
-        System.out.println("Please enter second lecturer (must be doctor or professor):");  // reading second lecturer
-        Lecturer scdLec = new Lecturer(s.nextLine());
+        System.out.println("Please enter first lecturer (must be doctor or professor): \n" +    // reading first lecturer                               // reading a committee
+                "(enter '0' to return to menu)");
+        String fstLecName = s.nextLine();
+        if (fstLecName.equals("0")) {
+            return;
+        }
+        Lecturer fstLec = new Lecturer(fstLecName);
+        System.out.println("Please enter second lecturer (must be doctor or professor): \n" +   // reading second lecturer
+                "(enter '0' to return to menu)");
+        String scdLecName = s.nextLine();
+        if (scdLecName.equals("0")) {
+            return;
+        }
+        Lecturer scdLec = new Lecturer(scdLecName);
         try {
-            int a = college.compareLecArticles(fstLec,scdLec);          // trying to compare articles between them
-
-            if (a > 0) {                                                // results
-                printArticlesHoldersResult(fstLec,scdLec);
-            } else if (a < 0) {
-                printArticlesHoldersResult(scdLec,fstLec);
-            } else {
-             System.out.println("Both lecturers have the same number of articles.");
-            }
+            System.out.println(college.compareLecArticles(fstLec,scdLec));      // trying to compare articles between them
         } catch (InvalidInputException iie) {
             System.out.println("Failed to compare between those lecturers.");   // EXCEPTIONS
             System.out.println(iie.getMessage());
         }
     }
-    private static void printArticlesHoldersResult(Lecturer lecGreater, Lecturer lecLesser) {
-        System.out.println(lecGreater.getName() + " has more articles than " + lecLesser.getName() + ".");
-    }
 
     private static void compareCommittees(College college) {
-        System.out.println("Please enter first committee: ");                       // reading first committee
+        System.out.println("Please enter first committee: \n" +
+                "(enter '0' to return to menu)");                       // reading first committee
         String comName1 = s.nextLine();
+        if (comName1.equals("0")) {
+            return;
+        }
         Committee fstCom = new Committee(comName1);
-        System.out.println("Please enter second committee: ");                      // reading second committee
+        System.out.println("Please enter second committee: \n" +
+                "(enter '0' to return to menu)");                      // reading second committee
         String comName2 = s.nextLine();
+        if (comName2.equals("0")) {
+            return;
+        }
         Committee scdCom = new Committee(comName2);
         System.out.println("Please choose preferred method to compare with: ");     // choosing a compare method
         for (int i = 0; i < COMPARE_METHODS.length; i++) {

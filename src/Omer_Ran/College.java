@@ -1,7 +1,6 @@
 package Omer_Ran;
 
-import static Omer_Ran.DegreeLevel.BACHELORS;
-import static Omer_Ran.DegreeLevel.DOCTOR;
+import static Omer_Ran.DegreeLevel.*;
 import static Omer_Ran.Utils.findObject;
 import static Omer_Ran.Utils.resizeArr;
 
@@ -189,7 +188,7 @@ public class College {
         }
     }
 
-    public int compareLecArticles(Lecturer fstLec, Lecturer scdLec) {
+    public String compareLecArticles(Lecturer fstLec, Lecturer scdLec) {
         Doctor doc1;
         Doctor doc2;
         Lecturer lec1 = (Lecturer) findObject(lecturers, numOfLecturers, fstLec);       // finding if the lecturer exists at all
@@ -208,7 +207,17 @@ public class College {
         } else {
             doc2 = (Doctor) lec2;
         }
-        return doc1.compareTo(doc2);
+        if (doc1.equals(doc2)) {
+            return "This is the same lecturer.";
+        }
+        int res = doc1.compareTo(doc2);
+        if (res > 0) {                                                // results
+            return doc1.getName() + " has more articles than " + doc2.getName() + ".";
+        } else if (res < 0) {
+            return doc2.getName() + " has more articles than " + doc1.getName() + ".";
+        } else {
+            return "Both lecturers have the same number of articles.";
+        }
     }
 
     public String compareComms(Committee fstCom, Committee scdCom, int prefMethod) {
@@ -267,24 +276,31 @@ public class College {
         Department kokod = new Department("kokod", 12);
         studyDepartments[numOfDeps++] = kokod;
 
-        Lecturer omer = new Lecturer("omer","315854091",DOCTOR,"ART",54.1f,studyDepartments[0]);
+        Doctor omer = new Doctor("omer","315854091",DOCTOR,"ART",54.1f,studyDepartments[0], new String[] { "1", "2", "3", "4", "5" });
         omer.setDepartment(kokod);
         lecturers[numOfLecturers++] = omer;
 
-        Lecturer elon = new Lecturer("elon","322819123",DOCTOR,"KAKI",500.67f,studyDepartments[0]);
+        Professor elon = new Professor("elon","322819123",PROFESSOR,"KAKI",500.67f,studyDepartments[0], new String[] { "1", "2"}, "police");
         elon.setDepartment(kokod);
         lecturers[numOfLecturers++] = elon;
 
-        Lecturer ran = new Lecturer("ran","3151",DOCTOR,"ART",32.3f,studyDepartments[0]);
+        Doctor ran = new Doctor("ran","3151",DOCTOR,"ART",32.3f,studyDepartments[0], new String[] { "1", "2"});
         ran.setDepartment(kokod);
         lecturers[numOfLecturers++] = ran;
 
-        Lecturer koz = new Lecturer("koz","12345",BACHELORS,"ART",36.31f,studyDepartments[0]);
+        Doctor koz = new Doctor("koz","12345",DOCTOR,"ART",36.31f,studyDepartments[0], new String[] { "1", "2"});
         koz.setDepartment(kokod);
         lecturers[numOfLecturers++] = koz;
 
-        Committee kokoc = new Committee("kokoc",lecturers[0]);
-        committees[numOfCommittee++] = kokoc;
-        kokoc.setChairman(omer);
+        Committee koko1 = new Committee("koko1",lecturers[0]);
+        committees[numOfCommittee++] = koko1;
+        koko1.setChairman(elon);
+
+        Committee koko2 = new Committee("koko2",lecturers[0]);
+        committees[numOfCommittee++] = koko2;
+        koko2.setChairman(koz);
+
+        assignLecToComm(omer, koko1);
+        assignLecToComm(ran, koko2);
     }
 }

@@ -23,13 +23,18 @@ public class Doctor extends Lecturer implements Comparable <Doctor> {
         return sb.toString();
     }
 
+    public String[] getArticles() {
+        return articles;
+    }
+
     @Override
     public String toString() {
         return super.toString() + ", articles = " + articlesDisplay();
     }
 
-    public String[] getArticles() {
-        return articles;
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 
     @Override
