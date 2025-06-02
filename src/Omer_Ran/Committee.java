@@ -72,12 +72,12 @@ public class Committee implements Nameable, Cloneable{
     }
 
     public void removeLecturer(Lecturer lecturer) {
-        if (removeObject(lecturer, lecturers, numOfLecturers)) {                            // trying to remove lecturer from that committee
+        if (removeObject(lecturer, lecturers, numOfLecturers)) {        // trying to remove lecturer from that committee
             numOfLecturers--;
-            lecturer.removeCommittee(this);                                          // if done - try to remove committee from lecturer's committees array
+            lecturer.removeCommittee(this);                             // if done - try to remove committee from lecturer's committees array
             return;
         }
-        throw new NotExistException(lecturer, this);                                 // if not done - ERROR
+        throw new NotExistException(lecturer, this);                    // if not done - not exist - EXCEPTION
     }
 
     public int getSumOfArticles() {
@@ -101,12 +101,12 @@ public class Committee implements Nameable, Cloneable{
 
     @Override
     protected Committee clone() throws CloneNotSupportedException {
-        Committee c1 = (Committee) super.clone();
-        c1.lecturers = lecturers.clone();
+        Committee c1 = (Committee) super.clone();           // cloning
+        c1.lecturers = lecturers.clone();                   // we want a new list with the same pointers to lecturers
         for (int i = 0; i < numOfLecturers ; i++) {
-            c1.lecturers[i].addCommittee(c1);
+            c1.lecturers[i].addCommittee(c1);               // assigning every lecturer in new clone, to that clone
         }
-        c1.setName(name + "-new");
+        c1.setName(name + "-new");                          // setting clone name
         return c1;
     }
 }

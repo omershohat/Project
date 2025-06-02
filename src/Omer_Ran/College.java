@@ -45,22 +45,22 @@ public class College {
         }
 
         if (findObject(lecturers, numOfLecturers, lecturer) != null) {                                      // finding if lecturer already exists
-            throw new ExistException(lecturer);                                                                          // exists - ERROR
+            throw new ExistException(lecturer);                                                             // exists - EXCEPTION
         }
         if (lecturer.getSalary() < 0) {                                                                     // checking if salary is valid
-            throw new InvalidSalaryException(lecturer.getSalary());                                                                         // not valid - ERROR
+            throw new InvalidSalaryException(lecturer.getSalary());                                         // not valid - EXCEPTION
         }
         Department dep = (Department) findObject(studyDepartments, numOfDeps, lecturer.getDepartment());    // finding department exists
         if (dep == null) {                                                                                  // if not and name is 'none' - department is null
             if (lecturer.getDepartment().getName().equals("none")) {
                 lecturer.setDepartment(null);
             } else {
-                throw new NotExistException(lecturer.getDepartment());
-            }                                                                                               // else - ERROR
+                throw new NotExistException(lecturer.getDepartment());                                      // else - EXCEPTION
+            }
         } else {
             lecturer.setDepartment(dep);
         }                                                                                                   // if exists - set department to lecturer
-        addLecturerFinal(lecturer);                                                                  // adding a new lecturer for general lecturers array
+        addLecturerFinal(lecturer);                                                                         // adding a new lecturer for general lecturers array
     }
 
     private void addLecturerFinal(Lecturer pendingLecturer) {
@@ -73,15 +73,15 @@ public class College {
     public void addCommittee(String name, Lecturer potentialChairman) throws CollegeExceptions {
         Committee committee = new Committee(name, potentialChairman);
         if (findObject(committees, numOfCommittee, committee) != null) {                        // finding if committee exists already
-             throw new ExistException(committee);                                                            // exists - ERROR
+             throw new ExistException(committee);                                               // exists - EXCEPTION
         }
         Lecturer lec = (Lecturer) findObject(lecturers, numOfLecturers, potentialChairman);     // finding if the potential chairman exists as a lecturer
         if (lec == null) {
-            throw new NotExistException(potentialChairman);                                                          // if not - ERROR
+            throw new NotExistException(potentialChairman);                                     // if not - EXCEPTION
         } else if (lec.getDegreeLevel().ordinal() < 2) {                                        // if exists - check if the lecturer qualified to be set as chairman
-            throw new QualificationException(potentialChairman);                                                        // if not - ERROR
+            throw new QualificationException(potentialChairman);                                // if not - EXCEPTION
         }
-        committee.setChairman(lec);                                                             // else - set at a chairman
+        committee.setChairman(lec);                                                             // else - set as a chairman
         addCommitteeFinal(committee);                                                    // adding a new committee for general committees array
     }
 
@@ -95,7 +95,7 @@ public class College {
     public void addDepartment(String name, int studentCount) {
         Department department = new Department(name, studentCount);
         if (findObject(studyDepartments, numOfDeps, department) != null) {                  // finding if department already exists
-            throw new ExistException(department);                                           // exists - ERROR
+            throw new ExistException(department);                                           // exists - EXCEPTION
         }
         addDepartmentFinal(department);                                                     // else - add a new department to departments general array
     }
@@ -110,70 +110,70 @@ public class College {
     public void assignLecToComm(Lecturer pendingLecturer, Committee pendingCommittee) {
         Committee com = (Committee) findObject(committees, numOfCommittee, pendingCommittee);            // finding if the committee exists
         if (com == null) {
-            throw new NotExistException(pendingCommittee);                                               // if not - ERROR
+            throw new NotExistException(pendingCommittee);                                               // if not - EXCEPTION
         }
         Lecturer lec = (Lecturer) findObject(com.getLecturers(), com.getNumOfLecturers(), pendingLecturer);     // finding if the lecturer already exists in the committee
         if (lec != null) {
-            throw new ExistException(pendingLecturer,pendingCommittee);                                  // if exists - ERROR
+            throw new ExistException(pendingLecturer,pendingCommittee);                                  // if exists - EXCEPTION
         }
         lec = (Lecturer) findObject(lecturers, numOfLecturers, pendingLecturer);                         // finding if the lecturer exists at all
         if (lec == null) {
-            throw new NotExistException(pendingLecturer);                                                // in not - ERROR
+            throw new NotExistException(pendingLecturer);                                                // in not - EXCEPTION
         }
         if (com.getChairman() == lec) {                                                                  // checking if the lecturer is already the committee's chairman
-            throw new QualificationException(pendingLecturer, pendingCommittee);                                                                        // yes - ERROR
+            throw new QualificationException(pendingLecturer, pendingCommittee);                         // yes - EXCEPTION
         }
         com.assign(lec);                                                                                 // assigning the lecturer to the committee
     }
 
     public void assignLecToDep(Lecturer pendingLecturer, Department pendingDepartment) throws InvalidInputException {
-        Department dep = (Department) findObject(studyDepartments, numOfDeps, pendingDepartment);          // finding if the department exists
+        Department dep = (Department) findObject(studyDepartments, numOfDeps, pendingDepartment);   // finding if the department exists
         if (dep == null) {
-            throw new NotExistException(pendingDepartment);                                                // if not - ERROR
+            throw new NotExistException(pendingDepartment);                                         // if not - EXCEPTION
         }
-        if (pendingDepartment.getName().equals("none")) {
+        if (pendingDepartment.getName().equals("none")) {                                           // if dep name is "none", dep = null
             dep = null;
         }
-        Lecturer lec = (Lecturer) findObject(lecturers, numOfLecturers, pendingLecturer);                  // finding if the lecturer exists at all
+        Lecturer lec = (Lecturer) findObject(lecturers, numOfLecturers, pendingLecturer);           // finding if the lecturer exists at all
         if (lec == null) {
-            throw new NotExistException(pendingLecturer);                                                  // in not - ERROR
+            throw new NotExistException(pendingLecturer);                                           // in not - EXCEPTION
         }
-        if(lec.getDepartment() == dep) {                                                                   // finding if the lecturer already exists in the department
-            throw new ExistException(pendingLecturer, pendingDepartment);
+        if(lec.getDepartment() == dep) {                                                            // finding if the lecturer already exists in the department
+            throw new ExistException(pendingLecturer, pendingDepartment);                           // if yes - EXCEPTION
         }
-        lec.setDepartment(dep);                                                                            // assigning the lecturer to the department
+        lec.setDepartment(dep);                                                                     // assigning the lecturer to the department
     }
 
     public void updateCommChairman(Lecturer potentialChairman, Committee committee) {
         Committee com = (Committee) findObject(committees,numOfCommittee,committee);                            // finding if committee exists
         if (com == null) {
-            throw new NotExistException(committee);                                                                         // if not - ERROR
+            throw new NotExistException(committee);                                                             // if not - EXCEPTION
         }
         Lecturer lec = (Lecturer) findObject(com.getLecturers(), com.getNumOfLecturers(), potentialChairman);   // finding if the lecturer already exists in the committee
         if (lec != null) {
-            throw new ExistException(potentialChairman, committee);                                                                      // if exists - ERROR
+            throw new ExistException(potentialChairman, committee);                                             // if exists - EXCEPTION
         }
         lec = (Lecturer) findObject(lecturers,numOfLecturers,potentialChairman);                                // checking if lecturer exists at all
         if (lec == null) {
-            throw new NotExistException(potentialChairman);                                                                          // if not - ERROR
+            throw new NotExistException(potentialChairman);                                                     // if not - EXCEPTION
         }
         if (com.getChairman() == lec) {                                                                         // checking if the lecturer is already the committee's chairman
-            throw new QualificationException(potentialChairman, committee);                                                                        // yes - ERROR
+            throw new QualificationException(potentialChairman, committee);                                     // yes - EXCEPTION
         }
         if (lec.getDegreeLevel().ordinal() < 2) {                                                               // checking if the lecturer qualified to be set as chairman
-            throw new QualificationException(potentialChairman);                                                                        // if not - ERROR
+            throw new QualificationException(potentialChairman);                                                // if not - EXCEPTION
         }
         com.setChairman(lec);                                                                            // assigning lecturer as chairman
     }
 
     public void removeLecturerFromComm(Lecturer lecturer, Committee committee) {
-        Committee com = (Committee) findObject(committees,numOfCommittee,committee);            // finding if committee exists
+        Committee com = (Committee) findObject(committees,numOfCommittee,committee);    // finding if committee exists
         if (com == null) {
-            throw new NotExistException(committee);                                             // if not - ERROR
+            throw new NotExistException(committee);                                     // if not - EXCEPTION
         }
-        Lecturer lec = (Lecturer) findObject(lecturers,numOfLecturers,lecturer);
+        Lecturer lec = (Lecturer) findObject(lecturers,numOfLecturers,lecturer);        // finding if lecturer exists
         if (lec == null) {
-            throw new NotExistException(lecturer);
+            throw new NotExistException(lecturer);                                      // if not - EXCEPTION
         } else {
             com.removeLecturer(lec);                                                    // if exists - check if exists in committee and remove
         }
@@ -185,26 +185,26 @@ public class College {
             return dep.getLecturersIncome();                                                    // if exists - calculate and return average income
         }
         else {
-            throw new NotExistException(department);                                            // if not - return 0
+            throw new NotExistException(department);                                            // if not - EXCEPTION
         }
     }
 
     public int compareLecArticles(Lecturer fstLec, Lecturer scdLec) {
         Doctor doc1;
         Doctor doc2;
-        Lecturer lec1 = (Lecturer) findObject(lecturers, numOfLecturers, fstLec);                       // finding if the lecturer exists at all
+        Lecturer lec1 = (Lecturer) findObject(lecturers, numOfLecturers, fstLec);       // finding if the lecturer exists at all
         if (lec1 == null) {
-            throw new NotExistException(fstLec);                                                        // in not - ERROR
-        } else if (lec1.getDegreeLevel().ordinal() < 2) {
-            throw new QualificationException(fstLec);
+            throw new NotExistException(fstLec);                                        // in not - EXCEPTION
+        } else if (lec1.getDegreeLevel().ordinal() < 2) {                               // checking lecturer degree level
+            throw new QualificationException(fstLec);                                   // if low - EXCEPTION
         } else {
             doc1 = (Doctor) lec1;
         }
-        Lecturer lec2 = (Lecturer) findObject(lecturers, numOfLecturers, scdLec);                       // finding if the lecturer exists at all
+        Lecturer lec2 = (Lecturer) findObject(lecturers, numOfLecturers, scdLec);       // finding if the lecturer exists at all
         if (lec2 == null) {
-            throw new NotExistException(scdLec);                                                        // in not - ERROR
-        } else if (lec2.getDegreeLevel().ordinal() < 2) {
-            throw new QualificationException(fstLec);
+            throw new NotExistException(scdLec);                                        // in not - EXCEPTION
+        } else if (lec2.getDegreeLevel().ordinal() < 2) {                               // checking lecturer degree level
+            throw new QualificationException(scdLec);                                   // if low - EXCEPTION
         } else {
             doc2 = (Doctor) lec2;
         }
@@ -212,19 +212,19 @@ public class College {
     }
 
     public String compareComms(Committee fstCom, Committee scdCom, int prefMethod) {
-        Committee com1 = (Committee) findObject(committees, numOfCommittee, fstCom);
+        Committee com1 = (Committee) findObject(committees, numOfCommittee, fstCom);    // finding if first committee exists
         if (com1 == null) {
-            throw new NotExistException(fstCom);
+            throw new NotExistException(fstCom);                                        // if not - EXCEPTION
         }
-        Committee com2 = (Committee) findObject(committees, numOfCommittee, scdCom);
+        Committee com2 = (Committee) findObject(committees, numOfCommittee, scdCom);    // finding if second committee exists
         if (com2 == null) {
-            throw new NotExistException(scdCom);
+            throw new NotExistException(scdCom);                                        // if not - EXCEPTION
         }
-        if (com1.equals(com2)) {
+        if (com1.equals(com2)) {                                        // checking if the same committee
             return "This is the same committee";
         }
         int res;
-        if (prefMethod == 1) {
+        if (prefMethod == 1) {                                                  // comparing by members amount
             CompareComByMemAmount comparator = new CompareComByMemAmount();
             res = comparator.compare(com1,com2);
             if (res > 0) {
@@ -234,7 +234,7 @@ public class College {
             } else {
                 return "Both committees have the same amount of members.";
             }
-        } else if (prefMethod == 2) {
+        } else if (prefMethod == 2) {                                           // comparing by sum of articles
             CompareComBySumArticles comparator = new CompareComBySumArticles();
             res = comparator.compare(com1, com2);
             if (res > 0) {
@@ -245,18 +245,18 @@ public class College {
                 return "Both committees have the same amount of articles.";
             }
         }
-        else{
+        else{                                                                   // if compare method invalid - EXCEPTION
             throw new InvalidInputException("Invalid method option.");
         }
     }
 
     public void cloneCom(Committee originalCom) throws CloneNotSupportedException {
-        Committee com1 = (Committee) findObject(committees, numOfCommittee, originalCom);
+        Committee com1 = (Committee) findObject(committees, numOfCommittee, originalCom);   // checking if committee exists
         if (com1 == null) {
-            throw new NotExistException(originalCom);
+            throw new NotExistException(originalCom);                                       // if not - EXCEPTION
         }
-        Committee comCloned = com1.clone();
-        addCommitteeFinal(comCloned);
+        Committee comCloned = com1.clone();         // cloning
+        addCommitteeFinal(comCloned);               // adding clone to committees
     }
 
     public void init(){
