@@ -1,5 +1,10 @@
 package Omer_Ran;
 
+import Omer_Ran.Exceptions.CollegeExceptions;
+import Omer_Ran.Exceptions.ExistException;
+import Omer_Ran.Exceptions.InvalidInputException;
+import Omer_Ran.Exceptions.NotExistException;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -35,7 +40,7 @@ public class Main {
     public static void main(String[] args) throws CloneNotSupportedException {
         s = new Scanner(System.in);
         College college = new College(enterCollegeName(s));
-        college.init();
+//        college.init();
         run(college, s);
         s.close();
     }

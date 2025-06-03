@@ -1,5 +1,7 @@
 package Omer_Ran;
 
+import Omer_Ran.Exceptions.NotExistException;
+
 import static Omer_Ran.Utils.removeObject;
 import static Omer_Ran.Utils.resizeArr;
 

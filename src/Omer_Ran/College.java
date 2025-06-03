@@ -1,5 +1,7 @@
 package Omer_Ran;
 
+import Omer_Ran.Exceptions.*;
+
 import static Omer_Ran.DegreeLevel.*;
 import static Omer_Ran.Utils.findObject;
 import static Omer_Ran.Utils.resizeArr;

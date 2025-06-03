@@ -1,4 +1,4 @@
-package Omer_Ran;
+package Omer_Ran.Exceptions;
 
 public class CollegeExceptions extends RuntimeException{
     private static final String PRE_MESSAGE = "Error: ";

@@ -1,4 +1,6 @@
-package Omer_Ran;
+package Omer_Ran.Exceptions;
+
+import Omer_Ran.Nameable;
 
 public class ExistException extends InvalidInputException {
     public ExistException(Nameable na) {

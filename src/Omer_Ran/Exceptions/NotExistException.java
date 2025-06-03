@@ -1,6 +1,8 @@
-package Omer_Ran;
+package Omer_Ran.Exceptions;
 
-public class NotExistException extends InvalidInputException{
+import Omer_Ran.Nameable;
+
+public class NotExistException extends InvalidInputException {
     public NotExistException(Nameable na) {
         super(na.getClass().getSimpleName() + " '" + na.getName() + "' does not exist...");
     }

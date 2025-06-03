@@ -1,4 +1,4 @@
-package Omer_Ran;
+package Omer_Ran.Exceptions;
 
 public class InvalidInputException extends CollegeExceptions {
     public InvalidInputException() {
