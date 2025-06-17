@@ -2,8 +2,7 @@ package Omer_Ran;
 
 import Omer_Ran.Exceptions.NotExistException;
 
-import static Omer_Ran.Utils.removeObject;
-import static Omer_Ran.Utils.resizeArr;
+import java.util.ArrayList;
 
 public class Lecturer implements Nameable {
     private String name;
@@ -12,8 +11,7 @@ public class Lecturer implements Nameable {
     private String major;
     private float salary;
     private Department department;
-    private Committee[] committees = new Committee[0];
-    private int numOfCommittees;
+    private ArrayList<Committee> committees = new ArrayList<>();
     StringBuilder sb;
 
     public Lecturer(String name, String id, DegreeLevel degreeLevel, String major, float salary, Department department) {
@@ -56,21 +54,18 @@ public class Lecturer implements Nameable {
     }
 
     public void addCommittee(Committee committee) {
-        if (numOfCommittees == committees.length) {                   // making sure there is place for new committee
-            committees = (Committee[]) resizeArr(committees);
-        }
-        committees[numOfCommittees++] = committee;                       // inserting committee to lecturer's committees array by index
+        committees.add(committee);                       // inserting committee to lecturer's committees array by index
     }
 
     private String committeesDisplay() {
         sb = new StringBuilder();
         sb.append("[");
-        for (int i = 0; i < numOfCommittees; i++) {
-            if (committees[i] != null) {
-                if (i == numOfCommittees - 1) {
-                    sb.append(committees[i].getName());
+        for (int i = 0; i < committees.size(); i++) {
+            if (committees.get(i) != null) {
+                if (i == committees.size() - 1) {
+                    sb.append(committees.get(i).getName());
                 } else {
-                    sb.append(committees[i].getName()).append(",");
+                    sb.append(committees.get(i).getName()).append(",");
                 }
             }
         }
@@ -79,8 +74,7 @@ public class Lecturer implements Nameable {
     }
 
     public void removeCommittee(Committee committee) {
-        if (removeObject(committee, committees, numOfCommittees)) {                    // trying to remove committee from lecturer's committees array
-            numOfCommittees--;
+        if (committees.remove(committee)) {
             return;                                                                    // if done - SUCCESS
         }
         throw new NotExistException("Lecturer is not assigned to that committee.");                                                     // if not done - ERROR
@@ -88,18 +82,24 @@ public class Lecturer implements Nameable {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Lecturer lec) {
+            return lec.name.equals(name);
+        }
+        return false;
     }
 
     @Override
     public String toString() {
         return
                 "name = '" + name + '\'' +
-                ", id = '" + id + '\'' +
-                ", degreeLevel = " + degreeLevel +
-                ", major = '" + major + '\'' +
-                ", salary = " + salary +
-                ", department = " + (department == null ? "none" : department.getName()) +
-                ", committees = " + committeesDisplay();
+                        ", id = '" + id + '\'' +
+                        ", degreeLevel = " + degreeLevel +
+                        ", major = '" + major + '\'' +
+                        ", salary = " + salary +
+                        ", department = " + (department == null ? "none" : department.getName()) +
+                        ", committees = " + committeesDisplay();
     }
 }

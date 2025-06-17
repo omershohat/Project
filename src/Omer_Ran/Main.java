@@ -40,7 +40,7 @@ public class Main {
     public static void main(String[] args) throws CloneNotSupportedException {
         s = new Scanner(System.in);
         College college = new College(enterCollegeName(s));
-//        college.init();
+        college.init();
         run(college, s);
         s.close();
     }
@@ -129,27 +129,10 @@ public class Main {
         }
         Department department = new Department(departmentName);                     // creating a pending department
 
-        DegreeLevel[] degreeLevels = DegreeLevel.values();                          // reading degree level of the lecturer
-        DegreeLevel degreeLevel = null;
-        int degreeChoice;
-        boolean valid = false;
-        while (!valid) {
-            System.out.println("Choose degree level: ");
-            for (int i = 0; i < DegreeLevel.values().length; i++) {
-                System.out.println(i + 1 + ". " + DegreeLevel.values()[i]);
-            }
-            System.out.println("(enter '0' to return to menu)");
-            degreeChoice = s.nextInt();
-            if (degreeChoice == 0) {
-                return;
-            } else if (1 <= degreeChoice && degreeChoice <= degreeLevels.length) {      // checking if choice is valid
-                degreeLevel = degreeLevels[degreeChoice - 1];
-                valid = true;
-            } else {
-                System.out.println("Invalid choice.");
-            }
+        DegreeLevel degreeLevel = getDegreeLevel();                                // reading degree level of the lecturer
+        if (degreeLevel == null) {
+            return;
         }
-        s.nextLine();
 
         String[] articles = null;
         if (degreeLevel == DegreeLevel.PROFESSOR || degreeLevel == DegreeLevel.DOCTOR) {        // reading articles
@@ -175,6 +158,7 @@ public class Main {
 
         System.out.println("The new lecturer '" + name + "' has been added successfully!");     // success
     }
+
     private static void printAddLecturerFailure(String name, InvalidInputException iie) {
         System.out.println("Failed to add the lecturer '" + name + "'.");
         System.out.println(iie.getMessage());
@@ -182,14 +166,21 @@ public class Main {
 
     private static void addCommittee(College college) {
         System.out.println(
-                "Enter a committee name: \n" +                                      // reading a committee
+                "Enter a committee name: \n" +                                      // reading a committee name
                         "(enter '0' to return to menu)");
         String name = s.nextLine();
         if (name.equals("0")) {
             return;
         }
         System.out.println(
-                "Enter chairman's name: \n" +                                       // reading a committee
+                "Enter the committee degree level: \n" +                                      // reading a committee degree
+                        "(enter '0' to return to menu)");
+        DegreeLevel degreeLevel = getDegreeLevel();                                // reading degree level of the lecturer
+        if (degreeLevel == null) {
+            return;
+        }
+        System.out.println(
+                "Enter chairman's name: \n" +                                       // reading a committee chairman
                         "(enter '0' to return to menu)");
         String lecturerName = s.nextLine();
         if (lecturerName.equals("0")) {
@@ -198,13 +189,14 @@ public class Main {
         Lecturer chairman = new Lecturer(lecturerName);
 
         try {
-            college.addCommittee(name, chairman);                                   // trying to add committee
+            college.addCommittee(name, chairman, degreeLevel);                                   // trying to add committee
         } catch (InvalidInputException e) {
             printAddCommitteeFailure(name, e);                                      // EXCEPTIONS
             return;
         }
         System.out.println("The new committee '" + name + "' has been added successfully!");    // success
     }
+
     private static void printAddCommitteeFailure(String name, CollegeExceptions ce) {
         System.out.println("Failed to add the committee '" + name + "'.");
         System.out.println(ce.getMessage());
@@ -231,7 +223,7 @@ public class Main {
         try {
             college.assignLecToComm(pendingLecturer, pendingCommittee);     // trying to assign lecturer to committee
         } catch (InvalidInputException iie) {
-            printAssignmentFailure(pendingLecturer,pendingCommittee,iie);   // EXCEPTIONS
+            printAssignmentFailure(pendingLecturer, pendingCommittee, iie);   // EXCEPTIONS
             return;
         }
         System.out.println("'" + lecturerName + "' was assigned to '" + committeeName + "' committee successfully!");   // success
@@ -259,11 +251,12 @@ public class Main {
         try {
             college.assignLecToDep(pendingLecturer, pendingDepartment);         // trying to assign
         } catch (InvalidInputException iie) {
-            printAssignmentFailure(pendingLecturer,pendingDepartment,iie);      // EXCEPTIONS
+            printAssignmentFailure(pendingLecturer, pendingDepartment, iie);      // EXCEPTIONS
             return;
         }
         System.out.println("'" + lecturerName + "' was assigned to '" + departmentName + "' department successfully!"); // success
     }
+
     private static void printAssignmentFailure(Nameable na, Nameable toNa, InvalidInputException iie) {
         System.out.println("Failed to assign '" + na.getName() + "' to '" + toNa.getName() + "' " + toNa.getClass().getSimpleName() + ".");
         System.out.println(iie.getMessage());
@@ -353,10 +346,10 @@ public class Main {
 
     private static void getAllLecturersIncome(College college) {
         float sum = 0.0f;                                                           // calculating average income of all lecturers in college
-        for (int i = 0; i < college.getNumOfLecturers(); i++) {
-            sum += college.getLecturers()[i].getSalary();
+        for (Lecturer lec : college.getLecturers()) {
+            sum += lec.getSalary();
         }
-        System.out.println("The average income of all lecturers in the college is: " + (sum) / (college.getNumOfLecturers()));
+        System.out.println("The average income of all lecturers in the college is: " + (sum) / (college.getLecturers().size()));
     }
 
     private static void getDepLecturersIncome(College college) {
@@ -379,19 +372,15 @@ public class Main {
     }
 
     private static void showLecturers(College college) {
-        for (int i = 0; i < college.getNumOfLecturers(); i++) {
-            if (college.getLecturers()[i] != null) {
-                System.out.println(college.getLecturers()[i]);           // activating toString() method in Lecturer.class
-            }
-        }
+        college.getLecturers().forEach(lec -> {
+            System.out.println(lec);
+        });
     }
 
     private static void showCommittees(College college) {
-        for (int i = 0; i < college.getNumOfCommittee(); i++) {
-            if (college.getCommittees()[i] != null) {
-                System.out.println(college.getCommittees()[i]);         // activating toString() method in Committee.class
-            }
-        }
+        college.getCommittees().forEach(com -> {
+            System.out.println(com);
+        });
     }
 
     private static void compareArticlesHolders(College college) {
@@ -410,7 +399,7 @@ public class Main {
         }
         Lecturer scdLec = new Lecturer(scdLecName);
         try {
-            System.out.println(college.compareLecArticles(fstLec,scdLec));      // trying to compare articles between them
+            System.out.println(college.compareLecArticles(fstLec, scdLec));      // trying to compare articles between them
         } catch (InvalidInputException iie) {
             System.out.println("Failed to compare between those lecturers.");   // EXCEPTIONS
             System.out.println(iie.getMessage());
@@ -440,8 +429,8 @@ public class Main {
         if (prefMethod == 0) {
             return;
         }
-        try{
-            System.out.println(college.compareComms(fstCom,scdCom,prefMethod));     // trying to compare
+        try {
+            System.out.println(college.compareComms(fstCom, scdCom, prefMethod));     // trying to compare
         } catch (InvalidInputException iie) {
             System.out.println(iie.getMessage());                                   // EXCEPTIONS
         }
@@ -476,8 +465,32 @@ public class Main {
         System.out.println("Please choose one of the following options : ");
     }
 
+    private static DegreeLevel getDegreeLevel() {
+        DegreeLevel[] degreeLevels = DegreeLevel.values();
+        int degreeChoice;
+        while (true) {
+            System.out.println("Choose degree level: ");
+            for (int i = 0; i < DegreeLevel.values().length; i++) {
+                System.out.println(i + 1 + ". " + DegreeLevel.values()[i]);
+            }
+            System.out.println("(enter '0' to return to menu)");
+            degreeChoice = s.nextInt();
+            if (degreeChoice == 0) {
+                s.nextLine();
+                return null;
+            } else if (1 <= degreeChoice && degreeChoice <= degreeLevels.length) {      // checking if choice is valid
+                s.nextLine();
+                return degreeLevels[degreeChoice - 1];
+            } else {
+                System.out.println("Invalid choice.");
+            }
+        }
+    }
+
     private static String enterCollegeName(Scanner s) {
         System.out.print("Please enter a college name: ");
         return s.next();
     }
+
+
 }
