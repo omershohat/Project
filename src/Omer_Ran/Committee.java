@@ -2,14 +2,15 @@ package Omer_Ran;
 
 import Omer_Ran.Exceptions.NotExistException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Committee implements Nameable, Cloneable {
+public class Committee implements Nameable, Cloneable, Serializable {
+    private static final long serialVersionUID = 1L;
     private DegreeLevel degreeLevel;
     private String name;
     private Lecturer chairman;
     private ArrayList<Lecturer> lecturers = new ArrayList<>();
-    private StringBuilder sb;
 
     public Committee(String name, Lecturer chairman, DegreeLevel degreeLevel) {
         this.name = name;
@@ -51,7 +52,7 @@ public class Committee implements Nameable, Cloneable {
     }
 
     private String lecturersDisplay() {
-        sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append("[");
         for (int i = 0; i < lecturers.size(); i++) {
             Lecturer lec = lecturers.get(i);
@@ -82,8 +83,8 @@ public class Committee implements Nameable, Cloneable {
 
     public int getSumOfArticles() {
         int sum = 0;
-        for (int i = 0; i < lecturers.size(); i++) {
-            if (lecturers.get(i) instanceof Doctor lec) {
+        for (Lecturer lecturer : lecturers) {
+            if (lecturer instanceof Doctor lec) {
                 sum += lec.getArticles().length;
             }
         }

@@ -5,6 +5,7 @@ import Omer_Ran.Exceptions.ExistException;
 import Omer_Ran.Exceptions.InvalidInputException;
 import Omer_Ran.Exceptions.NotExistException;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -39,8 +40,8 @@ public class Main {
 
     public static void main(String[] args) throws CloneNotSupportedException {
         s = new Scanner(System.in);
-        College college = new College(enterCollegeName(s));
-        college.init();
+        College college = loadData(s);
+//        college.init();
         run(college, s);
         s.close();
     }
@@ -54,7 +55,7 @@ public class Main {
                 s.nextLine();
                 switch (userChose) {
                     case 0 -> {                                         // v
-                        System.out.println("Done... Bye");
+                        saveData(college);
                         return;
                     }
                     case 1 -> addLecturer(college);                     // v
@@ -81,7 +82,6 @@ public class Main {
             }
         }
     }
-
 
     private static void addLecturer(College college) throws CollegeExceptions {
         System.out.println(
@@ -457,14 +457,6 @@ public class Main {
 
     }
 
-    private static void showMenu() {
-        System.out.println("\n====== Menu =======");
-        for (int i = 0; i < MENU.length; i++) {
-            System.out.println(i + ". " + MENU[i]);
-        }
-        System.out.println("Please choose one of the following options : ");
-    }
-
     private static DegreeLevel getDegreeLevel() {
         DegreeLevel[] degreeLevels = DegreeLevel.values();
         int degreeChoice;
@@ -485,6 +477,37 @@ public class Main {
                 System.out.println("Invalid choice.");
             }
         }
+    }
+
+    private static void showMenu() {
+        System.out.println("\n====== Menu =======");
+        for (int i = 0; i < MENU.length; i++) {
+            System.out.println(i + ". " + MENU[i]);
+        }
+        System.out.println("Please choose one of the following options : ");
+    }
+
+    private static void saveData(College college) {
+        try {
+            college.saveData();
+            System.out.println("Data has been saved successfully :)\n" +
+                    "Bye!");
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    private static College loadData(Scanner s) {
+        College college;
+        String collegeName = enterCollegeName(s);
+        try {
+            college = College.loadData(collegeName);
+        } catch (IOException | ClassNotFoundException e) {
+            college = new College(collegeName);
+            System.out.println("Couldn't find a saved college file named: " + collegeName +"\n" +
+                    "New college '" + collegeName + "' was created!");
+        }
+        return college;
     }
 
     private static String enterCollegeName(Scanner s) {

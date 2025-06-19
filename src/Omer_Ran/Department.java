@@ -1,11 +1,13 @@
 package Omer_Ran;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Department implements Nameable {
+public class Department implements Nameable, Serializable {
+    private static final long serialVersionUID = 1L;
     private String name;
     private int studentCount;
-    private ArrayList<Lecturer> lecturers = new ArrayList<>();
+    private final ArrayList<Lecturer> lecturers = new ArrayList<>();
 
     public Department(String departmentName, int studentCount) {
         name = departmentName;

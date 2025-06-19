@@ -2,17 +2,19 @@ package Omer_Ran;
 
 import Omer_Ran.Exceptions.*;
 
+import java.io.*;
 import java.util.ArrayList;
 
 import static Omer_Ran.DegreeLevel.*;
 import static Omer_Ran.Utils.findObject;
 
 
-public class College {
+public class College implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String collegeName;
-    private ArrayList<Lecturer> lecturers = new ArrayList<>();
-    private ArrayList<Department> studyDepartments = new ArrayList<>();
-    private ArrayList<Committee> committees = new ArrayList<>();
+    private final ArrayList<Lecturer> lecturers = new ArrayList<>();
+    private final ArrayList<Department> studyDepartments = new ArrayList<>();
+    private final ArrayList<Committee> committees = new ArrayList<>();
 
     public College(String collegeName) {
         this.collegeName = collegeName;
@@ -244,6 +246,17 @@ public class College {
 
     public ArrayList<Department> getDepartments() {
         return studyDepartments;
+    }
+
+    public void saveData() throws IOException {
+        ObjectOutputStream file = new ObjectOutputStream(new FileOutputStream(collegeName + ".bin"));
+        file.writeObject(this);
+        file.close();
+    }
+
+    public static College loadData(String name) throws IOException, ClassNotFoundException {
+        ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(name + ".bin"));
+        return (College) inFile.readObject();
     }
 
     public void init() {

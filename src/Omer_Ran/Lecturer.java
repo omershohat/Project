@@ -2,16 +2,18 @@ package Omer_Ran;
 
 import Omer_Ran.Exceptions.NotExistException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Lecturer implements Nameable {
+public class Lecturer implements Nameable, Serializable {
+    private static final long serialVersionUID = 1L;
     private String name;
     private String id;
     private DegreeLevel degreeLevel;
     private String major;
     private float salary;
     private Department department;
-    private ArrayList<Committee> committees = new ArrayList<>();
+    private final ArrayList<Committee> committees = new ArrayList<>();
     StringBuilder sb;
 
     public Lecturer(String name, String id, DegreeLevel degreeLevel, String major, float salary, Department department) {
